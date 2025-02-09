@@ -12,15 +12,15 @@
         <input type="text" placeholder="Поиск...">
     </div>
     <div class="nav-buttons">
-        <div class="nav-button">
+        <div class="nav-button" onclick="location.href='{{ url('/favorites') }}'">
             <img src="{{ asset('images/heart.png') }}" alt="Избранное">
             <span>Избранное</span>
         </div>
-        <div class="nav-button">
+        <div class="nav-button" onclick="location.href='{{ url('/cart') }}'">
             <img src="{{ asset('images/cart.png') }}" alt="Корзина">
             <span>Корзина</span>
         </div>
-        <div class="nav-button">
+        <div class="nav-button" data-toggle="modal" data-target="#loginModal">
             <img src="{{ asset('images/user.png') }}" alt="Войти">
             <span>Войти</span>
         </div>
