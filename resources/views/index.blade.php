@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1k3 store</title>
-    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('content')
     <div class="main-container">
     @include('header')
 
@@ -124,11 +117,10 @@
         <div class="carousel-track-recently-viewed">
             <!-- 4 изображения -->
             <div class="carousel-item-recently-viewed"><img src="https://picsum.photos/304/152" alt="Недавно смотрели 1"></div>
-            <div class="carousel-item-recently-viewed"><img src="https://picsum.photos/304/152" alt="Недавно смотрели 2"></div>
-            <div class="carousel-item-recently-viewed"><img src="https://picsum.photos/304/152" alt="Недавно смотрели 3"></div>
-            <div class="carousel-item-recently-viewed"><img src="https://picsum.photos/304/152" alt="Недавно смотрели 4"></div>
-        </div>
+            <div class="carousel-item-recently-viewed"><img src="https://picsum.photos/304/152" alt="Недавно смотрели 1"></div>
+            <div class="carousel-item-recently-viewed"><img src="https://picsum.photos/304/152" alt="Недавно смотрели 1"></div>
+            <div class="carousel-item-recently-viewed"><img src="https://picsum.photos/304/152" alt="Недавно смотрели 1"></div>
+            </div>
     </div>
     </div>
-</body>
-</html>
+@endsection
