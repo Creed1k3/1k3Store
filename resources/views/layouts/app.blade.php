@@ -16,7 +16,6 @@
     <div id="app">
         @yield('content')
     </div>
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ mix('js/bundle.js') }}"></script>
+    <script type="module" src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

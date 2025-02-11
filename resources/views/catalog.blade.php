@@ -8,6 +8,7 @@
         @include('components/product-card')
         @include('components/product-card')
         @include('components/product-card')
+        <counter></counter>
         </div>
     </div>
 @endsection
