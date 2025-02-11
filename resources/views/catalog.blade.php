@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="catalog-containerr">
-    @include('header')
+        @include('header')
         <div class="product-grid-container">
-        @include('components/product-card')
-        @include('components/product-card')
-        @include('components/product-card')
-        @include('components/product-card')
+            @include('components/product-card')
+            @include('components/product-card')
+            @include('components/product-card')
+            @include('components/product-card')
         </div>
     </div>
 @endsection
