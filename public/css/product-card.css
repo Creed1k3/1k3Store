@@ -50,14 +50,18 @@
     text-overflow: ellipsis;
     flex-grow: 1;
     text-align: left;
-    color: #333;
+    color: var(--neutral-black);
+    font-weight: 300;
 }
 
 .product-price {
-    font-size: 18px;
-    color: #333;
+    font-size: 28px;
+    color: var(--neutral-black);
     margin: 0 7px;
     text-align: left;
+    font-weight: 600;
+    margin-bottom: 15px;
+    
 }
 .product-bottom {
     display: flex;
@@ -85,7 +89,8 @@
 .button-group {
     display: flex;
     gap: 5px;
-    margin-bottom: 15px;
+    margin-top: 8px;
+    margin-bottom: 22px;
 }
 
 .icon-btn {

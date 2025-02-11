@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #24A7DC;
+    --primary-color: #219ccc;
     --primary-dark: rgb(30, 139, 182);
     --primary-darker: rgb(25, 116, 152);
     --primary-light: rgb(150, 210, 235);
@@ -11,7 +11,8 @@
     --neutral-light-gray: rgb(240, 240, 240);
     --neutral-gray: rgb(200, 200, 200);
     --neutral-dark-gray: rgb(100, 100, 100);
-    --neutral-black: rgb(0, 0, 0);
+    --neutral-black: #2E2E2E;
+    --mishanka: #f2f2f2;
 }
 
 /* Reset and Box Sizing */
