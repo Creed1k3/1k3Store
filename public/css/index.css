@@ -13,7 +13,7 @@ img{
 }
 
 /* Стили для контейнера */
-.container {
+.threeelementscontainer {
     display: flex;
     align-items: center;
     height: 18.75rem; /* 300px */

@@ -5,7 +5,7 @@
     @include('header')
 
     <!-- Контейнер для всех элементов -->
-    <div class="container">
+    <div class="threeelementscontainer">
         <!-- Место под Кнопку Вход -->
         <div class="button-entry">
             <img src="https://picsum.photos/304/300" alt="Заполнитель">
