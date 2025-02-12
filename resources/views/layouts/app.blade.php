@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
     @vite(['resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/product-card.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/catalog.css') }}">
 </head>
 <body>
     <div id="app">
+    <header-component></header-component>
         @yield('content')
     </div>
 </body>

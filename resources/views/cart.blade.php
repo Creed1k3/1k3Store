@@ -3,7 +3,6 @@
 @section('content')
 
     <div class="cartcontainer">
-    @include('header')
         <h1>Корзина</h1>
         <div class="placeholder-content">
             <img src="https://picsum.photos/304/300" alt="Заполнитель">

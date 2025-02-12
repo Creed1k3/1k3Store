@@ -8,7 +8,7 @@ img{
 }
 
 .main-container {
-    max-width: 1200px;
+    max-width: 1350px;
     margin: 0 auto;
 }
 
@@ -17,9 +17,8 @@ img{
     display: flex;
     align-items: center;
     height: 18.75rem; /* 300px */
-    justify-content: space-between;
     overflow: hidden;
-    gap: 0.625rem;
+    gap: 20px;
 }
 
 .button-entry, .promotion-image, .parallel-element {
@@ -30,14 +29,14 @@ img{
 }
 
 .button-entry {
-    flex: 1 1 calc((100% - 1.875rem) / 4); /* 1.875rem это три gap по 0.625rem */
+    width: 304px; /* 1.875rem это три gap по 0.625rem */
     height: 100%;
     background-color: #007bff;
     color: white;
 }
 
 .promotion-image {
-    flex: 2 1 calc((100% - 1.875rem) / 2); /* В два раза шире чем button-entry */
+    flex: 626px; /* В два раза шире чем button-entry */
     height: 100%;
     background-color: #f8f9fa;
 }
@@ -47,13 +46,13 @@ img{
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    flex: 1 1 calc((100% - 1.875rem) / 4); /* В такой же ширине как button-entry */
+    width: 304px; /* В такой же ширине как button-entry */
 }
 
 .parallel-element {
     height: 48%; 
     background-color: #e9ecef;
-    margin-bottom: 0.625rem;
+
 }
 
 .parallel-element:last-child {

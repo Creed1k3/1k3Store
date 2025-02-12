@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="favcontainer">
-    @include('header')
         <h1>Избранное</h1>
         <div class="placeholder-content">
             <img src="https://picsum.photos/304/300" alt="Заполнитель">

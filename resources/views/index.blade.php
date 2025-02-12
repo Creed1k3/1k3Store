@@ -1,32 +1,14 @@
-@extends('layouts.app')
+<div class="main-container">
+    @extends('layouts.app')
 
 @section('content')
-    <div class="main-container">
-    @include('header')
-
-    <!-- Контейнер для всех элементов -->
-    <div class="threeelementscontainer">
-        <!-- Место под Кнопку Вход -->
-        <div class="button-entry">
-            <img src="https://picsum.photos/304/300" alt="Заполнитель">
-        </div>
-
-        <!-- Место для картинки "Акция" -->
-        <div class="promotion-image">
-            <img src="https://picsum.photos/626/300" alt="Заполнитель">
-        </div>
-
-        <!-- Два параллельных элемента -->
-        <div class="parallel-elements">
-            <div class="parallel-element">
-                <img src="https://picsum.photos/304/145" alt="Заполнитель">
-            </div>
-            <div class="parallel-element">
-                <img src="https://picsum.photos/304/145" alt="Заполнитель">
-            </div>
+   
+    <div id="app">
+        <div class="categories-slider">
+            <categories-list></categories-list>
+            <index-slider></index-slider>
         </div>
     </div>
-
     <!-- Популярные категории -->
     <h2>Популярные категории</h2>
     <div class="carousel">
