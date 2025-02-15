@@ -1,63 +1,33 @@
-body {
-    padding: 0.5rem 13%;
-    margin: 0; /* Убедитесь, что у body нет внешних отступов */
-    box-sizing: border-box; /* Убедитесь, что размеры включают padding и border */
-}
-img{
-    object-fit: hidden;
-}
+html{
+    box-sizing: border-box;
+    }
+    *, *:after, *:before{
+    box-sizing: inherit;
+    }
+    
 
-.main-container {
-    max-width: 1350px;
+
+.wrapper {
+    max-width: 1380px;
     margin: 0 auto;
+    
+}
+.threelements{
+  display: flex;
+  height: 414px;
+  gap: 10px;
 }
 
-/* Стили для контейнера */
-.threeelementscontainer {
-    display: flex;
-    align-items: center;
-    height: 18.75rem; /* 300px */
-    overflow: hidden;
-    gap: 20px;
-}
+.firstelement{
+    flex: 1;
+ }
+ .secondelement{
+     flex: 3;
+ }
+ .thirdelement{
+     flex: 1;
+ }
 
-.button-entry, .promotion-image, .parallel-element {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1rem;
-}
-
-.button-entry {
-    width: 304px; /* 1.875rem это три gap по 0.625rem */
-    height: 100%;
-    background-color: #007bff;
-    color: white;
-}
-
-.promotion-image {
-    flex: 626px; /* В два раза шире чем button-entry */
-    height: 100%;
-    background-color: #f8f9fa;
-}
-
-.parallel-elements {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    width: 304px; /* В такой же ширине как button-entry */
-}
-
-.parallel-element {
-    height: 48%; 
-    background-color: #e9ecef;
-
-}
-
-.parallel-element:last-child {
-    margin-bottom: 0;
-}
 
 /* Стили для карусели Популярные категории */
 .carousel {

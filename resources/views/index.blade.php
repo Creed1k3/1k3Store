@@ -1,12 +1,18 @@
-<div class="main-container">
+<div class="wrapper">
     @extends('layouts.app')
 
 @section('content')
    
-    <div id="app">
-        <div class="categories-slider">
+    <div class="threelements" id="app">
+        <div class="firstelement">
             <categories-list></categories-list>
+</div>
+        <div class="secondelement">
             <index-slider></index-slider>
+            </div>
+        <div class="thirdelement">
+        <categories-list></categories-list>
+        </div>
         </div>
     </div>
     <!-- Популярные категории -->

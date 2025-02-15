@@ -1,12 +1,7 @@
 <template>
   <header class="header">
     <div class="logo-catalog">
-      <a class="logo-container" href="/" data-cy="test-header-logo">
-        <div class="logo">
-          <img :src='"/images/logo.png"' alt="Логотип" width="50" height="50">
-        </div>
-        <div class="tooltip" data-cy="test-header-tooltip">Вернуться на главную</div>
-      </a>
+      <button class="home-button" @click="backtohome"></button>
       <button class="catalog-btn" @click="openCatalog">Каталог</button>
     </div>
     <div class="search">
@@ -64,146 +59,71 @@ export default {
 </script>
 
 <style scoped>
-:root {
-  --primary-color: #219ccc;
-  --primary-dark: rgb(30, 139, 182);
-  --primary-darker: rgb(25, 116, 152);
-  --primary-light: rgb(150, 210, 235);
-  --primary-lighter: rgb(200, 230, 245);
-  --accent-color: #F25A07;
-  --accent-color-2: rgb(220, 36, 167);
-  --accent-color-3: rgb(167, 220, 36);
-  --neutral-white: rgb(255, 255, 255);
-  --neutral-light-gray: #FFFFFF;
-  --neutral-gray: #F7F7F7;
-  --neutral-dark-gray: rgb(100, 100, 100);
-  --neutral-black: #2E2E2E;
-  --mishanka: #f2f2f2;
-}
 
-/* Reset and Box Sizing */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Body Styling */
-body {
-  background-color: var(--neutral-light-gray);
-  color: var(--neutral-dark-gray);
-  font-family: Arial, sans-serif;
-}
-
-/* Header Styling */
 .header {
   display: flex;
   align-items: center;
-  width: 100%;
   justify-content: space-between;
-  gap: 20px; /* Отступ между элементами */
-  background-color: var(--neutral-light-gray);
+  gap: 10px;
   color: var(--neutral-white);
-  height: 76px; /* 4.75rem = 76px */
+  height: 96px; 
 
 }
 
-/* Logo and Catalog Styling */
 .logo-catalog {
-  width: 304px; /* Фиксированная ширина */
-  display: flex;
-  align-items: center;
-  height: 60px; /* 3.75rem = 60px */
-  background-color: var(--primary-color);
-  border-radius: 16px; /* 1rem = 16px */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 0.25rem = 4px, 0.5rem = 8px */
+  height: 64px;
+  border-radius: 16px;
+   display: flex;
+   background-color: #24A7DC;
+   flex: 1;
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-height: 60px; /* 3.75rem = 60px */
-  width: 100%;
-  text-decoration: none;
-  overflow: hidden;
-  background-color: var(--primary-color); 
-  border-radius: 12px; /* 0.75rem = 12px */
+.home-button{
+  flex: 1;
+  background-image: url(/images/logo.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: inherit; 
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+
 }
 
-.logo-container:hover {
-  background-color: var(--primary-dark);
+.home-button:hover{
+background-color:  #1d779b;
+
 }
 
-.logo-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 5px; /* 0.3125rem = 5px */
-}
-
-/* Catalog Button Styling */
 .catalog-btn {
-  flex: 0 0 45%;
-  padding: 5px 10px; /* 0.3125rem = 5px, 0.625rem = 10px */
-  border: none;
-  background-color: var(--primary-color);
-  color: var(--neutral-white);
+  flex: 1;
   cursor: pointer;
-  height: 100%;
-  align-self: center;
-  text-align: center;
-  border-radius: 12px; /* 0.75rem = 12px */
-  margin-left: 5%;
+  color: #FFFFFF;
+  font-size: 16px;
+  border-radius: inherit;
   position: relative;
-}
-
-.catalog-btn::after {
-  content: '▼';
-  font-size: 16px; /* 1rem = 16px */
-  color: var(--neutral-white);
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .catalog-btn:hover {
-  background-color: var(--primary-darker);
-  margin-top: 0;
-  margin-bottom: 0;
+  background-color: darkred;
 }
 
-/* Tooltip Styling */
-.tooltip {
-  display: none;
-}
 
-.logo-container:hover .tooltip {
-  display: block;
-  position: absolute;
-  top: 70px; /* 4.375rem = 70px */
-  left: 0;
-  background: #333;
-  color: var(--neutral-white);
-  padding: 5px 10px; /* 0.3125rem = 5px, 0.625rem = 10px */
-  border-radius: 4px; /* 0.25rem = 4px */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 0.125rem = 2px, 0.25rem = 4px */
-}
-
-/* Search Bar Styling */
 .search {
-  width: 600px; /* Фиксированная ширина */
+  flex: 3;
   display: flex;
   align-items: center;
-  height: 56px; /* 3.5rem = 56px */
+  height: 64px;
 }
 
 .search input {
   width: 100%;
-  padding: 5px; /* 0.3125rem = 5px */
-  border: 1px solid var(--neutral-gray);
-  background-color: var(--neutral-gray);
+  padding: 12px; 
+  border-radius: 12px;
   height: 100%;
+  background-color: #e0e0e0;
 }
 
 .search input:hover {
@@ -212,13 +132,11 @@ body {
   border-color: var(--neutral-dark-gray);
 }
 
-/* Navigation Buttons Styling */
 .nav-buttons {
-  width: 200px; /* Фиксированная ширина */
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 24px; /* 1.5rem = 24px */
+  justify-content: space-between;
 }
 
 .nav-button {
@@ -226,11 +144,10 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 64px; /* 4rem = 64px */
-  height: 48px; /* 3rem = 48px */
+  width: 64px;
+  height: 48px;
   cursor: pointer;
-  background-color: var(--neutral-light-gray);
-  border-radius: 5px; /* 0.3125rem = 5px */
+  border-radius: 5px;
   text-align: center;
 }
 
@@ -240,13 +157,13 @@ body {
 }
 
 .nav-button svg {
-  width: 24px; /* 1.5rem = 24px */
-  height: 24px; /* 1.5rem = 24px */
-  margin-bottom: 5px; /* 0.3125rem = 5px */
+  width: 24px; 
+  height: 24px; 
+  margin-bottom: 5px;
 }
 
 .nav-button span {
-  font-size: 12px; /* 0.75rem = 12px */
+  font-size: 12px;
   color: var(--neutral-dark-gray);
 }
 </style>
