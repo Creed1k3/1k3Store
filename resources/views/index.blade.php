@@ -5,13 +5,14 @@
    
     <div class="threelements" id="app">
         <div class="firstelement">
-            <categories-list></categories-list>
+            <login-block></login-block>
 </div>
         <div class="secondelement">
             <index-slider></index-slider>
             </div>
         <div class="thirdelement">
-        <categories-list></categories-list>
+        <verical-slider>
+        </verical-slider>
         </div>
         </div>
     </div>

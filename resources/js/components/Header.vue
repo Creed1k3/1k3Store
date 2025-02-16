@@ -42,6 +42,9 @@ export default {
     };
   },
   methods: {
+    backtohome() {
+      window.location.replace('/');
+    },
     openCatalog() {
       console.log('Каталог открыт');
     },
@@ -107,7 +110,7 @@ background-color:  #1d779b;
 }
 
 .catalog-btn:hover {
-  background-color: darkred;
+  background-color: #1d779b;
 }
 
 

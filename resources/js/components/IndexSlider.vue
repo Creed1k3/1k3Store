@@ -17,16 +17,32 @@ export default {
     return {
       slides: [
         {
-          image: 'https://picsum.photos/800/400?random=1',
+          image: '/images/slider1.png',
           alt: 'Slide 1',
         },
         {
-          image: 'https://picsum.photos/800/400?random=2',
+          image: '/images/slider2.png',
           alt: 'Slide 2',
         },
         {
-          image: 'https://picsum.photos/800/400?random=3',
+          image: '/images/slider3.png',
           alt: 'Slide 3',
+        },
+        {
+          image: '/images/slider3.png',
+          alt: 'Slide 3',
+        },
+        {
+          image: '/images/slider4.png',
+          alt: 'Slide 4',
+        },
+        {
+          image: '/images/slider5.png',
+          alt: 'Slide 5',
+        },
+        {
+          image: '/images/slider6.png',
+          alt: 'Slide 6',
         },
       ],
       currentIndex: 0,

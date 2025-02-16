@@ -1,4 +1,4 @@
-.product-card {
+/* .product-card {
     border: 1px solid #ddd;
     border-radius: 25px;
     overflow: hidden;
@@ -39,7 +39,7 @@
     height: 10px;
     background-color: #666;
     border-radius: 50%;
-    margin: 0 4px; /* 4px margin on each side to create 8px gap */
+    margin: 0 4px; 
 }
 
 .product-title {
@@ -114,4 +114,4 @@
 
 .icon-btn:hover {
     background-color: var(--primary-dark);
-}
+} */
