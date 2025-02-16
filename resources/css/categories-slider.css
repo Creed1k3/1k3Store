@@ -1,0 +1,25 @@
+/* categories-slider.css */
+.categories-slider {
+    display: flex; /* Используем Flexbox для расположения элементов */
+    gap: 20px; /* Отступ между элементами */
+    width: 100%; 
+    max-width: 1350px; /* Ограничиваем максимальную ширину (опционально) */
+    margin: 0 auto; /* Центрируем контейнер */
+
+  }
+  
+  .categories-list {
+    width: 304px;; /* Занимает 1 часть (1/4 ширины) */
+    background-color: #f9f9f9; /* Фон для визуализации */
+    border-radius: 8px; /* Скругление углов */
+    padding: 20px; /* Внутренние отступы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
+  }
+  
+  .index-slider {
+    flex: 3; /* Занимает 3 части (3/4 ширины) */
+    background-color: #e0e0e0; /* Фон для визуализации */
+    border-radius: 8px; /* Скругление углов */
+    padding: 20px; /* Внутренние отступы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
+  }

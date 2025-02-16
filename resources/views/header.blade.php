@@ -13,15 +13,15 @@
     </div>
     <div class="nav-buttons">
         <div class="nav-button" onclick="location.href='{{ url('/favorites') }}'">
-            <img src="{{ asset('images/heart.png') }}" alt="Избранное">
+            <img src="{{ asset('images/headerfavorites.svg') }}" alt="Избранное">
             <span>Избранное</span>
         </div>
         <div class="nav-button" onclick="location.href='{{ url('/cart') }}'">
-            <img src="{{ asset('images/cart.png') }}" alt="Корзина">
+            <img src="{{ asset('images/headercart.svg') }}" alt="Корзина">
             <span>Корзина</span>
         </div>
         <div class="nav-button" data-toggle="modal" data-target="#loginModal">
-            <img src="{{ asset('images/user.png') }}" alt="Войти">
+            <img src="{{ asset('images/defaultavatar.svg') }}" alt="Войти">
             <span>Войти</span>
         </div>
     </div>

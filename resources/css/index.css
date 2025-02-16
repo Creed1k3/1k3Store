@@ -1,0 +1,190 @@
+html{
+    box-sizing: border-box;
+    }
+    *, *:after, *:before{
+    box-sizing: inherit;
+    }
+    
+
+
+.wrapper {
+    max-width: 1380px;
+    margin: 0 auto;
+    
+}
+.threelements{
+  display: flex;
+  height: 414px;
+  gap: 10px;
+  
+}
+
+.firstelement{
+    flex: 1;
+ }
+ .secondelement{
+     flex: 3;
+ }
+ .thirdelement{
+     flex: 1;
+ }
+
+
+/* Стили для карусели Популярные категории */
+.carousel {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.carousel-track {
+    display: flex;
+    flex-wrap: nowrap; /* Отключите перенос элементов на новую строку */
+    gap: 0.625rem; /* Установите такой же gap, как в .container */
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    width: 19rem; /* 304px в rem */
+    box-sizing: border-box;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin: 0; /* Убедитесь, что у изображения нет внешних отступов */
+}
+
+/* Стили для карусели Популярные производители */
+.carousel-manufacturers {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.carousel-track-manufacturers {
+    display: flex;
+    flex-wrap: nowrap; /* Отключите перенос элементов на новую строку */
+    gap: 0.625rem; /* Установите такой же gap, как в .container */
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item-manufacturers {
+    width: 12.5rem; /* 200px в rem */
+    height: 6.25rem; /* 100px в rem */
+    box-sizing: border-box;
+}
+
+.carousel-item-manufacturers img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin: 0; /* Убедитесь, что у изображения нет внешних отступов */
+}
+
+/* Стили для карусели Хиты продаж */
+.carousel-hits {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.carousel-track-hits {
+    display: flex;
+    flex-wrap: nowrap; /* Отключите перенос элементов на новую строку */
+    gap: 0.625rem; /* Установите такой же gap, как в .container */
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item-hits {
+    width: 20rem; /* 304px в rem */
+    box-sizing: border-box;
+}
+
+.carousel-item-hits img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin: 0; /* Убедитесь, что у изображения нет внешних отступов */
+}
+
+/* Стили для карусели Новинки, актуальные предложения */
+.carousel-new-arrivals {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.carousel-track-new-arrivals {
+    display: flex;
+    flex-wrap: nowrap; /* Отключите перенос элементов на новую строку */
+    gap: 0.625rem; /* Установите такой же gap, как в .container */
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item-new-arrivals {
+    width: 12.5rem; /* 200px в rem */
+    height: 10rem; /* 160px в rem */
+    box-sizing: border-box;
+}
+
+.carousel-item-new-arrivals img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin: 0; /* Убедитесь, что у изображения нет внешних отступов */
+}
+
+/* Стили для карусели Наши преимущества */
+.carousel-advantages {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.carousel-track-advantages {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* Создает 8 колонок одинаковой ширины */
+    grid-template-rows: repeat(2, 1fr); /* Создает 2 строки одинаковой высоты */
+    gap: 0.625rem; /* Установите такой же gap, как в .container */
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item-advantages {
+    width: 100%; /* Убедитесь, что ширина элемента соответствует размеру сетки */
+    box-sizing: border-box;
+}
+
+.carousel-item-advantages img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin: 0; /* Убедитесь, что у изображения нет внешних отступов */
+}
+
+/* Стили для карусели Вы недавно смотрели */
+.carousel-recently-viewed {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.carousel-track-recently-viewed {
+    display: flex;
+    flex-wrap: nowrap; /* Отключите перенос элементов на новую строку */
+    gap: 0.625rem; /* Установите такой же gap, как в .container */
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item-recently-viewed {
+    width: 20rem; /* 304px в rem */
+    box-sizing: border-box;
+}
+
+.carousel-item-recently-viewed img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin: 0; /* Убедитесь, что у изображения нет внешних отступов */
+}
