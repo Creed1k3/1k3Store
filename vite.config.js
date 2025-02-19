@@ -41,7 +41,7 @@ export default defineConfig({
   // Оптимизация сборки (опционально)
   build: {
     manifest: true,
-    outDir: 'public/build',
+    outDir: 'public',
     chunkSizeWarningLimit: 1000, // Увеличиваем лимит для предупреждений о размере чанков
     rollupOptions: {
       output: {

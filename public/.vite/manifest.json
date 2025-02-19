@@ -1,0 +1,22 @@
+{
+  "_lodash-l0sNRNKZ.js": {
+    "file": "assets/lodash-l0sNRNKZ.js",
+    "name": "lodash"
+  },
+  "_vue-DsO7dLV0.js": {
+    "file": "assets/vue-DsO7dLV0.js",
+    "name": "vue"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-3ScolNoy.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_vue-DsO7dLV0.js"
+    ],
+    "css": [
+      "assets/app-iwU_V00H.css"
+    ]
+  }
+}
