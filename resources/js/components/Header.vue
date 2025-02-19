@@ -21,6 +21,7 @@
         <span>Войти</span>
       </div>
     </div>
+    <LoginModal v-if="isLoginModalOpen" @close="isLoginModalOpen = false" />
   </header>
 </template>
 
@@ -28,6 +29,7 @@
 import FavoritesIcon from '@/assets/images/headerfavorites.svg';
 import CartIcon from '@/assets/images/headercart.svg';
 import AvatarIcon from '@/assets/images/defaultavatar.svg';
+import LoginModal from '@/components/LoginModal.vue'; // Adjust the path as needed
 
 export default {
   name: 'AppHeader',
@@ -35,10 +37,12 @@ export default {
     FavoritesIcon,
     CartIcon,
     AvatarIcon,
+    LoginModal,
   },
   data() {
     return {
       searchQuery: '',
+      isLoginModalOpen: false,
     };
   },
   methods: {
@@ -55,14 +59,13 @@ export default {
       this.$router.push(route);
     },
     openLoginModal() {
-      console.log('Открыть модальное окно входа');
+      this.isLoginModalOpen = true;
     },
   },
 };
 </script>
 
 <style scoped>
-
 .header {
   display: flex;
   align-items: center;
@@ -70,18 +73,17 @@ export default {
   gap: 10px;
   color: var(--neutral-white);
   height: 96px; 
-
 }
 
 .logo-catalog {
   height: 64px;
   border-radius: 16px;
-   display: flex;
-   background-color: #24A7DC;
-   flex: 1;
+  display: flex;
+  background-color: #24A7DC;
+  flex: 1;
 }
 
-.home-button{
+.home-button {
   flex: 1;
   background-image: url(/images/logo.png);
   background-repeat: no-repeat;
@@ -90,12 +92,10 @@ export default {
   border-radius: inherit; 
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-
 }
 
-.home-button:hover{
-background-color:  #1d779b;
-
+.home-button:hover {
+  background-color: #1d779b;
 }
 
 .catalog-btn {
@@ -112,7 +112,6 @@ background-color:  #1d779b;
 .catalog-btn:hover {
   background-color: #1d779b;
 }
-
 
 .search {
   flex: 3;

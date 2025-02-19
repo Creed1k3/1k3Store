@@ -16,6 +16,11 @@ import IndexSlider from './components/IndexSlider.vue';
 import LoginBlock from './components/LoginBlock.vue';
 import IndexVerticalSlider from './components/IndexVerticalSlider.vue';
 import ProductCard from './components/ProductCard.vue';
+import Carousel4Items from './components/Carousel4Items.vue';
+import IndexGrid from './components/IndexGrid.vue';
+import Carousel8Items from './components/Carousel8Items.vue';
+import AdvantagesGrid from './components/AdvantagesGrid.vue';
+import LoginModal from './components/LoginModal.vue';
 
 app.component('example-component', ExampleComponent);
 app.component('header-component', Header);
@@ -24,5 +29,9 @@ app.component('index-slider', IndexSlider);
 app.component('login-block', LoginBlock);
 app.component('verical-slider', IndexVerticalSlider)
 app.component('product-card', ProductCard)
-
+app.component('carousel', Carousel4Items)
+app.component('index-grid', IndexGrid)
+app.component('carousel8', Carousel8Items)
+app.component('advantages-grid', AdvantagesGrid)
+app.component('login-modal', LoginModal)
 app.mount('#app');
