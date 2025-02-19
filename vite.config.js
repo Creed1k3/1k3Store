@@ -40,11 +40,12 @@ export default defineConfig({
 
   // Оптимизация сборки (опционально)
   build: {
+    manifest: true,
+    outDir: 'public/build',
     chunkSizeWarningLimit: 1000, // Увеличиваем лимит для предупреждений о размере чанков
     rollupOptions: {
       output: {
         manualChunks: {
-          // Разделение кода на чанки (опционально)
           vue: ['vue', 'vue-router', 'pinia'],
           lodash: ['lodash'],
         },
