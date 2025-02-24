@@ -37,4 +37,28 @@ export default defineConfig({
       '~': '/resources',    // Пример: import styles from '~/css/app.css'
     },
   },
+
+  // Оптимизация сборки (опционально)
+  build: {
+    chunkSizeWarningLimit: 1000, // Увеличиваем лимит для предупреждений о размере чанков
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Разделение кода на чанки (опционально)
+          vue: ['vue', 'vue-router', 'pinia'],
+          lodash: ['lodash'],
+        },
+      },
+    },
+  },
+
+  // Настройки сервера разработки (опционально)
+  server: {
+    hmr: {
+      host: 'localhost', // Хост для HMR (Hot Module Replacement)
+    },
+    watch: {
+      usePolling: true, // Полезно для Docker или WSL
+    },
+  },
 });

@@ -1,0 +1,187 @@
+:root {
+    --primary-color: #219ccc;
+    --primary-dark: rgb(30, 139, 182);
+    --primary-darker: rgb(25, 116, 152);
+    --primary-light: rgb(150, 210, 235);
+    --primary-lighter: rgb(200, 230, 245);
+    --accent-color: #F25A07;
+    --accent-color-2: rgb(220, 36, 167);
+    --accent-color-3: rgb(167, 220, 36);
+    --neutral-white: rgb(255, 255, 255);
+    --neutral-light-gray: rgb(240, 240, 240);
+    --neutral-gray: rgb(200, 200, 200);
+    --neutral-dark-gray: rgb(100, 100, 100);
+    --neutral-black: #2E2E2E;
+    --mishanka: #f2f2f2;
+}
+
+/* Reset and Box Sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    background-color: var(--neutral-light-gray);
+    color: var(--neutral-dark-gray);
+    font-family: Arial, sans-serif;
+}
+
+/* Header Styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--neutral-light-gray);
+    color: var(--neutral-white);
+    
+    height: 4.75rem;
+}
+
+/* Logo and Catalog Styling */
+.logo-catalog {
+    display: flex;
+    align-items: center;
+    width: 19rem;
+    height: 3.75rem;
+    background-color: var(--primary-color);
+    border-radius: 1rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 3.75rem;
+    width: 100%;
+    text-decoration: none;
+    overflow: hidden;
+    background-color: var(--primary-color); 
+    border-radius: 0.75rem;
+}
+
+.logo-container:hover {
+    background-color: var(--primary-dark);
+}
+
+.logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0.3125rem;
+}
+
+/* Catalog Button Styling */
+.catalog-btn {
+    flex: 0 0 45%;
+    padding: 0.3125rem 0.625rem;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--neutral-white);
+    cursor: pointer;
+    height: 100%;
+    align-self: center;
+    text-align: center;
+    border-radius: 0.75rem;
+    margin-left: 5%;
+    position: relative;
+}
+
+.catalog-btn::after {
+    content: '▼';
+    font-size: 1rem;
+    color: var(--neutral-white);
+    position: absolute;
+    right: 0.625rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.catalog-btn:hover {
+    background-color: var(--primary-darker);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Tooltip Styling */
+.tooltip {
+    display: none;
+}
+
+.logo-container:hover .tooltip {
+    display: block;
+    position: absolute;
+    top: 4.375rem;
+    left: 0;
+    background: #333;
+    color: var(--neutral-white);
+    padding: 0.3125rem 0.625rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
+}
+
+/* Search Bar Styling */
+.search {
+    width: 45%;
+    margin-left: 1rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.search input {
+    width: 100%;
+    padding: 0.3125rem;
+    border: 1px solid var(--neutral-gray);
+    border-radius: 2.8125rem;
+    background-color: darken(var(--neutral-light-gray), 10%);
+    height: 100%;
+}
+
+.search input:hover {
+    background-color: var(--neutral-gray);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
+    border-color: var(--neutral-dark-gray);
+}
+
+/* Navigation Buttons Styling */
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 4rem;
+    height: 3rem;
+    cursor: pointer;
+    background-color: var(--neutral-light-gray);
+    border-radius: 0.3125rem;
+    text-align: center;
+}
+
+.nav-button:hover {
+    background-color: var(--neutral-gray);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
+}
+
+.nav-button img {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-bottom: 0.3125rem;
+    border-radius: 0.3125rem;
+}
+
+.nav-button span {
+    font-size: 0.75rem;
+    color: var(--neutral-dark-gray);
+}
+
