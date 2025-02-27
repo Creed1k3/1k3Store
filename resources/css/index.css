@@ -6,10 +6,13 @@ html{
     }
     
 
-
+body{
+    margin-top: 96px;
+}
 .wrapper {
     max-width: 1380px;
     margin: 0 auto;
+    z-index: 1002;
     
 }
 .threelements{
