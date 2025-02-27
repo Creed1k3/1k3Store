@@ -2,17 +2,17 @@
   <header class="header">
     <div class="logo-catalog">
       <button class="home-button" @click="backtohome"></button>
-      <button class="catalog-btn" @click="openCatalog">Каталог</button>
+      <button class="catalog-btn" @click="openCatalogModal">Каталог</button>
     </div>
     <div class="search">
       <input type="text" placeholder="Поиск..." v-model="searchQuery" @input="handleSearch">
     </div>
     <div class="nav-buttons">
-      <div class="nav-button" @click="navigateTo('/favorites')">
+      <div class="nav-button" @click="openfavorites">
         <FavoritesIcon />
         <span>Избранное</span>
       </div>
-      <div class="nav-button" @click="navigateTo('/cart')">
+      <div class="nav-button" @click="openCart">
         <CartIcon />
         <span>Корзина</span>
       </div>
@@ -22,6 +22,8 @@
       </div>
     </div>
     <LoginModal v-if="isLoginModalOpen" @close="isLoginModalOpen = false" />
+    <CatalogModal :isOpen="isCatalogModalOpen" @close="isCatalogModalOpen = false" />
+
   </header>
 </template>
 
@@ -29,7 +31,8 @@
 import FavoritesIcon from '@/assets/images/headerfavorites.svg';
 import CartIcon from '@/assets/images/headercart.svg';
 import AvatarIcon from '@/assets/images/defaultavatar.svg';
-import LoginModal from '@/components/LoginModal.vue'; // Adjust the path as needed
+import LoginModal from './modals/LoginModal.vue'; // Adjust the path as needed
+import CatalogModal from './modals/CatalogModal.vue';
 
 export default {
   name: 'AppHeader',
@@ -38,29 +41,35 @@ export default {
     CartIcon,
     AvatarIcon,
     LoginModal,
+    CatalogModal
   },
   data() {
     return {
       searchQuery: '',
       isLoginModalOpen: false,
+      isCatalogModalOpen: false,
     };
   },
   methods: {
     backtohome() {
       window.location.replace('/');
     },
-    openCatalog() {
-      console.log('Каталог открыт');
-    },
+
     handleSearch() {
       console.log('Поисковый запрос:', this.searchQuery);
     },
-    navigateTo(route) {
-      this.$router.push(route);
+    openCart() {
+      window.location.replace('/cart');
+    },
+    openfavorites() {
+      window.location.replace('/favorites');
     },
     openLoginModal() {
       this.isLoginModalOpen = true;
     },
+    openCatalogModal(){
+      this.isCatalogModalOpen = true;
+    }
   },
 };
 </script>

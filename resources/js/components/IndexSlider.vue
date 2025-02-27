@@ -1,5 +1,5 @@
 <template>
-  <div class="slider">
+  <div class="slider" @wheel="handleScroll">
     <div class="slides" :style="slideStyle">
       <div v-for="(slide, index) in slides" :key="index" class="slide">
         <img :src="slide.image" :alt="slide.alt" class="slide-image" />
@@ -63,8 +63,17 @@ export default {
       this.currentIndex =
         (this.currentIndex - 1 + this.slides.length) % this.slides.length;
     },
+    handleScroll(event) {
+        event.preventDefault();
+        if (event.deltaY > 0) {
+          this.nextSlide();
+        } else {
+          this.prevSlide();
+        }
+      }
   },
 };
+   
 </script>
 
 <style scoped>

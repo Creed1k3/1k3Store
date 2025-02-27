@@ -1,8 +1,6 @@
-<div class="wrapper" id="app">
-    @extends('layouts.app')
-
+@extends('layouts.app')
 @section('content')
-   
+
     <div class="threelements">
         <div class="firstelement">
             <login-block></login-block>
@@ -10,13 +8,11 @@
         <div class="secondelement">
             <index-slider></index-slider>
             </div>
-        <div class="thirdelement">
-        <verical-slider>
-        </verical-slider>
+    <div class="thirdelement">
+        <vertical-slider>
+        </vertical-slider>
         </div>
         </div>
-    </div>
-    <!-- Популярные категории -->
     <h2>Популярные категории</h2>
     <div class="indexgrid">
     <index-grid />
@@ -41,5 +37,4 @@
 </advantages-grid>
     </div>
     
-    </div>
 @endsection

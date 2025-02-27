@@ -7,9 +7,9 @@
     @vite(['resources/js/app.js'])
 </head>
 <body>
-    <div id="app">
+<div class="wrapper" id="app">
     <header-component></header-component>
         @yield('content')
-    </div>
+</div>
 </body>
 </html>
