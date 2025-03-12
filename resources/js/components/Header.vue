@@ -1,11 +1,11 @@
 <template>
-  <div class="headbg">
+  <div class="headbg" @click="handleOutsideClick">
     <div class="headwrapper">
       <header class="header">
         <div class="logo-catalog" ref="logoCatalog">
           <button class="home-button" @click="backtohome"></button>
           <button class="catalog-btn" @click="toggleCatalog">Каталог</button>
-          <div class="catalog-dropdown" v-if="isCatalogOpen">
+          <div class="catalog-dropdown" v-if="isCatalogOpen" ref="catalogDropdown">
             <ul>
               <li
                 v-for="category in categories"
@@ -144,7 +144,21 @@ export default {
       // Здесь можно добавить логику для перехода на страницу подкатегории
       this.isCatalogOpen = false; // Закрываем выпадающий список после выбора
     },
+    handleOutsideClick(event) {
+      const catalogDropdown = this.$refs.catalogDropdown;
+      const catalogBtn = this.$refs.logoCatalog;
+
+      if (catalogDropdown && catalogBtn && !catalogBtn.contains(event.target) && !catalogDropdown.contains(event.target)) {
+        this.isCatalogOpen = false;
+      }
+    }
   },
+  mounted() {
+    document.addEventListener('click', this.handleOutsideClick);
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.handleOutsideClick);
+  }
 };
 </script>
 

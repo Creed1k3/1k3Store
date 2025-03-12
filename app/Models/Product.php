@@ -8,21 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    
+    public $timestamps = false;
 
-    protected $fillable = ['name', 'description', 'price', 'manufacturer_id', 'category_id'];
+    protected $fillable = ['image', 'title', 'price'];
 
-    public function manufacturer()
-    {
-        return $this->belongsTo(Manufacturer::class);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function specifications()
-    {
-        return $this->belongsToMany(Specification::class, 'product_specifications')->withPivot('value');
-    }
 }

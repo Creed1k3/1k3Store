@@ -6,7 +6,7 @@
       </p>
       <div class="login-block__buttons">
         <button class="login-block__button">Войти</button>
-        <button class="login-block__button">Личный Кабинет</button>
+        <!-- <button class="login-block__button">Личный Кабинет</button> -->
     </div>
 </div>
   </template>

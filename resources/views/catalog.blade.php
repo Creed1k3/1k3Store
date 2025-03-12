@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="catalog-containerr">
+    <div class="catalog-container">
         <div class="product-grid-container">
-            @include('components/product-card')
-            @include('components/product-card')
-            @include('components/product-card')
-            @include('components/product-card')
+            @foreach($products as $product)
+                <product-card :product="$product"></product-card>
+            @endforeach
         </div>
     </div>
 @endsection

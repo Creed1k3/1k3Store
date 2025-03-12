@@ -18,7 +18,6 @@ import IndexGrid from './components/IndexGrid.vue';
 import Carousel8Items from './components/Carousel8Items.vue';
 import AdvantagesGrid from './components/AdvantagesGrid.vue';
 import LoginModal from './components/modals/LoginModal.vue';
-import CatalogModal from './components/modals/CatalogDropDown.vue';
 
 const app = createApp({});
 
@@ -34,6 +33,5 @@ app.component('index-grid', IndexGrid);
 app.component('carousel8', Carousel8Items);
 app.component('advantages-grid', AdvantagesGrid);
 app.component('login-modal', LoginModal);
-app.component('catalog-modal', CatalogModal)
 
 app.mount('#app');
