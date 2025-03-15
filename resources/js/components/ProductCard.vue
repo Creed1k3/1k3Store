@@ -56,6 +56,7 @@ export default {
 
 <style scoped>
 .product-card {
+  width: 352px;
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 16px;
@@ -65,9 +66,10 @@ export default {
 }
 
 .product-image img {
-  max-width: 100%;
-  height: auto;
+  width: 200px;
+  height: 200px;
   border-radius: 8px;
+  margin: 0 auto;
 }
 
 .product-dots {
