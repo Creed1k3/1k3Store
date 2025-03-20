@@ -11,7 +11,7 @@
   .categories-list {
     width: 304px;; /* Занимает 1 часть (1/4 ширины) */
     background-color: #f9f9f9; /* Фон для визуализации */
-    border-radius: 8px; /* Скругление углов */
+    border-radius: 12px; /* Скругление углов */
     padding: 20px; /* Внутренние отступы */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
   }
@@ -19,7 +19,7 @@
   .index-slider {
     flex: 3; /* Занимает 3 части (3/4 ширины) */
     background-color: #e0e0e0; /* Фон для визуализации */
-    border-radius: 8px; /* Скругление углов */
+    border-radius: 12px; /* Скругление углов */
     padding: 20px; /* Внутренние отступы */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
   }

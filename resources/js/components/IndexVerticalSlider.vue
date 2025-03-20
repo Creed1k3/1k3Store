@@ -123,7 +123,7 @@
     overflow-y: auto; /* Включаем вертикальную прокрутку */
     scroll-behavior: smooth; /* Плавная прокрутка */
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 12px;
     background-color: #fff;
   }
   
@@ -133,7 +133,7 @@
     align-items: center;
     justify-content: center;
     background-color: #e0e0e0;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 16px;
     height: 111px
   }
@@ -141,7 +141,7 @@
   .brand-card img {
     max-width: 100%;
     max-height: 100%;
-    border-radius: 8px;
+    border-radius: 12px;
   }
   
   /* Стили для скроллбара */
@@ -151,7 +151,7 @@
   
   .brands-container::-webkit-scrollbar-thumb {
     background-color: #007bff;
-    border-radius: 4px;
+    border-radius: 12px;
   }
   
   .brands-container::-webkit-scrollbar-thumb:hover {
@@ -160,6 +160,6 @@
   
   .brands-container::-webkit-scrollbar-track {
     background-color: #f9f9f9;
-    border-radius: 4px;
+    border-radius: 12px;
   }
   </style>

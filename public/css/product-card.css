@@ -98,7 +98,7 @@
     height: 48px;
     background-color: var(--primary-color);
     border: none;
-    border-radius: 15px;
+    border-radius: 12px;
     padding: 0;
     cursor: pointer;
     transition: background-color 0.3s ease;

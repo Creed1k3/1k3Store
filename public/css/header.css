@@ -47,7 +47,7 @@ body {
     width: 19rem;
     height: 3.75rem;
     background-color: var(--primary-color);
-    border-radius: 1rem;
+    border-radius: 8;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 

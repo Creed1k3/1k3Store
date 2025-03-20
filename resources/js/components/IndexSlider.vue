@@ -81,7 +81,7 @@ export default {
   position: relative;
   margin: 0 auto;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -98,7 +98,7 @@ export default {
 .slide-image {
   width: 100%;
   display: block;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .slider-button {

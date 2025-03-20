@@ -191,7 +191,8 @@ export default {
 
 .logo-catalog {
   height: 64px;
-  border-radius: 16px;
+  border-radius: 12px;
+    border: 1px solid #ddd;
   display: flex;
   background-color: #24A7DC;
   flex: 1;
@@ -234,7 +235,7 @@ export default {
   left: 0;
   background-color: white;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   width: 250px;
@@ -262,7 +263,7 @@ export default {
   left: 100%;
   background-color: white;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 250px;
   margin-left: 0; /* Убираем отступ между уровнями */
@@ -293,6 +294,7 @@ export default {
 .search input {
   width: 100%;
   padding: 12px; 
+  border: 1px solid #ddd;
   border-radius: 12px;
   height: 100%;
   background-color: #e0e0e0;
@@ -319,7 +321,7 @@ export default {
   width: 64px;
   height: 48px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
   text-align: center;
 }
 

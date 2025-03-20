@@ -80,7 +80,7 @@
   color: #fff;
   background-color: #24A7DC;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }

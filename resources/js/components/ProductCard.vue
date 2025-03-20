@@ -56,7 +56,7 @@ export default {
 
 <style scoped>
 .product-card {
-  width: 352px;
+  width: 260px;
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 16px;
@@ -68,7 +68,7 @@ export default {
 .product-image img {
   width: 200px;
   height: 200px;
-  border-radius: 8px;
+  border-radius: 12px;
   margin: 0 auto;
 }
 
