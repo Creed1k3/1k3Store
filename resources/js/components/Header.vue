@@ -3,22 +3,43 @@
     <div class="headwrapper">
       <header class="header">
         <div class="logo-catalog" ref="logoCatalog">
-          <button class="home-button" @click="backtohome"></button>
-          <button class="catalog-btn" @click="toggleCatalog">Каталог</button>
-          <div class="catalog-dropdown" v-if="isCatalogOpen" ref="catalogDropdown">
+          <button class="home-button" @click="backtohome">
+            <!-- Simplified 1k3 text logo -->
+            <svg class="home-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+              <text
+                x="50"
+                y="60"
+                font-family="Montserrat, sans-serif"
+                font-size="48"
+                fill="#ffffff"
+                text-anchor="middle"
+                font-weight="700"
+              >
+                1k3
+              </text>
+            </svg>
+          </button>
+          <button class="catalog-btn" @click="toggleCatalog">
+            Каталог
+          </button>
+          <div
+            class="catalog-dropdown"
+            v-if="isCatalogOpen"
+            ref="catalogDropdown"
+          >
             <ul>
               <li
                 v-for="category in categories"
                 :key="category.id"
                 @mouseenter="showSubMenu(category.id)"
-                @mouseleave="hideSubMenu(category.id)"
+                @mouseleave="hideSubMenu"
               >
                 {{ category.name }}
                 <div
                   class="submenu"
                   v-if="activeCategoryId === category.id"
                   @mouseenter="keepSubMenuVisible(category.id)"
-                  @mouseleave="hideSubMenu(category.id)"
+                  @mouseleave="hideSubMenu"
                 >
                   <ul>
                     <li
@@ -34,9 +55,16 @@
             </ul>
           </div>
         </div>
+
         <div class="search">
-          <input type="text" placeholder="Поиск..." v-model="searchQuery" @input="handleSearch">
+          <input
+            type="text"
+            placeholder="Поиск..."
+            v-model="searchQuery"
+            @input="handleSearch"
+          />
         </div>
+
         <div class="nav-buttons">
           <div class="nav-button" @click="openfavorites">
             <FavoritesIcon />
@@ -51,7 +79,11 @@
             <span>Войти</span>
           </div>
         </div>
-        <LoginModal v-if="isLoginModalOpen" @close="closeLoginModal" />
+
+        <LoginModal
+          v-if="isLoginModalOpen"
+          @close="closeLoginModal"
+        />
       </header>
     </div>
   </div>
@@ -84,8 +116,8 @@ export default {
           subCategories: [
             { id: 11, name: 'Смартфоны' },
             { id: 12, name: 'Ноутбуки' },
-            { id: 13, name: 'Телевизоры' },
-          ],
+            { id: 13, name: 'Телевизоры' }
+          ]
         },
         {
           id: 2,
@@ -93,8 +125,8 @@ export default {
           subCategories: [
             { id: 21, name: 'Мужская одежда' },
             { id: 22, name: 'Женская одежда' },
-            { id: 23, name: 'Детская одежда' },
-          ],
+            { id: 23, name: 'Детская одежда' }
+          ]
         },
         {
           id: 3,
@@ -102,10 +134,10 @@ export default {
           subCategories: [
             { id: 31, name: 'Мебель' },
             { id: 32, name: 'Текстиль' },
-            { id: 33, name: 'Освещение' },
-          ],
-        },
-      ],
+            { id: 33, name: 'Освещение' }
+          ]
+        }
+      ]
     };
   },
   methods: {
@@ -141,13 +173,11 @@ export default {
     },
     selectSubCategory(subCategory) {
       console.log('Выбрана подкатегория:', subCategory.name);
-      // Здесь можно добавить логику для перехода на страницу подкатегории
-      this.isCatalogOpen = false; // Закрываем выпадающий список после выбора
+      this.isCatalogOpen = false;
     },
     handleOutsideClick(event) {
       const catalogDropdown = this.$refs.catalogDropdown;
       const catalogBtn = this.$refs.logoCatalog;
-
       if (catalogDropdown && catalogBtn && !catalogBtn.contains(event.target) && !catalogDropdown.contains(event.target)) {
         this.isCatalogOpen = false;
       }
@@ -164,7 +194,7 @@ export default {
 
 <style scoped>
 .headbg {
-  background-color: #f6f6f6;
+  background-color: #f7f7f7;
   width: 100%;
   position: fixed;
   top: 0;
@@ -173,6 +203,8 @@ export default {
   z-index: 1000;
   display: flex;
   justify-content: center;
+  padding: 10px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .headwrapper {
@@ -184,61 +216,72 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  color: var(--neutral-white);
-  height: 96px;
+  gap: 20px;
+  height: 80px;
+  padding: 0 40px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.header:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
 }
 
 .logo-catalog {
-  height: 64px;
-  border-radius: 12px;
-    border: 1px solid #ddd;
   display: flex;
-  background-color: #24A7DC;
-  flex: 1;
+  align-items: center;
   position: relative;
+  gap: 12px;
+}
+
+.home-button,
+.catalog-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  padding: 0 20px;
+  background-color: #20293a;
+  color: #ffffff;
+  border: none;
+  border-radius: 28px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .home-button {
-  flex: 1;
-  background-image: url(/images/logo.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  border-radius: inherit; 
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  width: 56px;
+  padding: 0;
 }
 
-.home-button:hover {
-  background-color: #1d779b;
+.home-button:hover,
+.catalog-btn:hover {
+  background-color: #1b2532;
+  transform: translateY(-2px);
+}
+
+.home-icon {
+  width: 60%;
+  height: auto;
 }
 
 .catalog-btn {
-  flex: 1;
-  cursor: pointer;
-  color: #FFFFFF;
   font-size: 16px;
-  border-radius: inherit;
-  position: relative;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.catalog-btn:hover {
-  background-color: #1d779b;
+  font-weight: 600;
 }
 
 .catalog-dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   left: 0;
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  width: 250px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 260px;
+  padding: 8px 0;
 }
 
 .catalog-dropdown ul {
@@ -248,25 +291,25 @@ export default {
 }
 
 .catalog-dropdown li {
-  padding: 10px;
+  padding: 12px 20px;
   cursor: pointer;
-  position: relative;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 }
 
 .catalog-dropdown li:hover {
-  background-color: #f0f0f0;
+  background-color: #f7f7f7;
 }
 
 .submenu {
   position: absolute;
   top: 0;
   left: 100%;
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 250px;
-  margin-left: 0; /* Убираем отступ между уровнями */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 240px;
+  padding: 8px 0;
 }
 
 .submenu ul {
@@ -276,68 +319,66 @@ export default {
 }
 
 .submenu li {
-  padding: 10px;
+  padding: 10px 16px;
   cursor: pointer;
+  font-weight: 400;
+  transition: background-color 0.2s ease;
 }
 
 .submenu li:hover {
-  background-color: #f0f0f0;
+  background-color: #f7f9fc;
 }
 
 .search {
-  flex: 3;
-  display: flex;
-  align-items: center;
-  height: 64px;
+  flex: 1;
 }
 
 .search input {
   width: 100%;
-  padding: 12px; 
+  padding: 12px 16px;
   border: 1px solid #ddd;
-  border-radius: 12px;
-  height: 100%;
-  background-color: #e0e0e0;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
 }
 
-.search input:hover {
-  background-color: var(--neutral-gray);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-  border-color: var(--neutral-dark-gray);
+.search input:focus {
+  border-color: #20293a;
 }
 
 .nav-buttons {
-  flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  gap: 16px;
 }
 
 .nav-button {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  width: 64px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
+  background-color: transparent;
+  border: none;
   cursor: pointer;
-  border-radius: 6px;
-  text-align: center;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .nav-button:hover {
-  background-color: var(--neutral-gray);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+  background-color: #f7f7f7;
+  transform: translateY(-2px);
 }
 
 .nav-button svg {
-  width: 24px; 
-  height: 24px; 
-  margin-bottom: 5px;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 4px;
 }
 
 .nav-button span {
   font-size: 12px;
-  color: var(--neutral-dark-gray);
+  color: #20293a;
 }
 </style>

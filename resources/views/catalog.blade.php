@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="catalog-container">
+    <div class="catalog-container mt-8 mb-12"> <!-- mt-8 for margin-top and mb-12 for margin-bottom -->
         <!-- Сайдбар с фильтрами -->
         <div class="filter-sidebar">
             <h3>Фильтры</h3>

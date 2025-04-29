@@ -7,25 +7,32 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Запуск миграции.
+     *
+     * @return void
      */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('manufacturer');
-            $table->string('image');
-            $table->integer('price');
+            $table->string('title');           // Название продукта
+            $table->string('manufacturer');    // Производитель
+            $table->string('image');           // Ссылка на изображение
+            $table->integer('price');          // Цена продукта
+            $table->string('category');        // Категория продукта
+            $table->json('colors');            // Цвета, сохраняемые как JSON
+            $table->text('description');       // Описание продукта
+            $table->timestamps();             // Стандартные метки времени
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Откат миграции.
+     *
+     * @return void
      */
     public function down(): void
     {
         Schema::dropIfExists('products');
     }
 };
-    

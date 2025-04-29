@@ -18,6 +18,8 @@ import IndexGrid from './components/IndexGrid.vue';
 import Carousel8Items from './components/Carousel8Items.vue';
 import AdvantagesGrid from './components/AdvantagesGrid.vue';
 import LoginModal from './components/modals/LoginModal.vue';
+import Cart from './components/Cart.vue';
+import Footer from './components/Footer.vue';
 
 const app = createApp({});
 
@@ -33,5 +35,7 @@ app.component('index-grid', IndexGrid);
 app.component('carousel8', Carousel8Items);
 app.component('advantages-grid', AdvantagesGrid);
 app.component('login-modal', LoginModal);
+app.component('cart-component', Cart)
+app.component('footer-component', Footer);
 
 app.mount('#app');
