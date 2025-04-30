@@ -45,8 +45,24 @@
               <div class="font-semibold text-left">{{ item.name }}</div>
               <div class="text-sm text-gray-500 text-left">Набор: Цвет {{ item.color }}</div>
             </div>
-            <div class="flex items-center gap-6">
-              <div class="font-semibold">
+            <div class="flex items-center gap-4">
+              <div class="flex items-center border rounded px-2 py-1">
+                <button
+                  class="px-2 text-lg font-bold text-gray-700 hover:text-black"
+                  @click="changeQty(item, item.quantity - 1)"
+                  :disabled="item.quantity <= 1"
+                >
+                  −
+                </button>
+                <span class="px-2 w-6 text-center">{{ item.quantity }}</span>
+                <button
+                  class="px-2 text-lg font-bold text-gray-700 hover:text-black"
+                  @click="changeQty(item, item.quantity + 1)"
+                >
+                  +
+                </button>
+              </div>
+              <div class="font-semibold whitespace-nowrap">
                 {{ item.isActive ? formatNumber(item.quantity * item.price) : '0' }} ₽
               </div>
             </div>
@@ -155,6 +171,7 @@
   </div>
 </template>
 
+
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import Cookies from 'js-cookie';
@@ -233,6 +250,7 @@ function confirmDelete() {
 }
 </script>
 
+
 <style scoped>
 .bg-gray-800 {
   background-color: #333333;
@@ -241,3 +259,4 @@ function confirmDelete() {
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
 }
 </style>
+
