@@ -1,6 +1,16 @@
 <template>
   <div class="max-w-[1380px] w-[1380px] mx-auto">
-    <h1 class="text-3xl font-bold mb-6 text-left">Корзина</h1>
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-bold text-left">Корзина</h1>
+      <button
+        v-if="cartItems.length > 0"
+        @click="openDeleteModal(null)"
+        class="text-sm text-red-600 hover:text-red-800 bg-red-100 px-4 py-2 rounded-lg"
+      >
+        Очистить корзину
+      </button>
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- Товары в корзине -->
       <div class="md:col-span-2 space-y-4">
@@ -114,9 +124,13 @@
         class="bg-gray-800 p-6 rounded-lg w-96 transition-transform duration-500 ease-in-out transform shadow-xl"
         :class="{'scale-95': !showModal, 'scale-100': showModal}"
       >
-        <h2 class="text-xl font-semibold mb-4 text-center text-white">Удалить товар</h2>
+        <h2 class="text-xl font-semibold mb-4 text-center text-white">
+          {{ itemToDelete === null ? 'Очистить корзину' : 'Удалить товар' }}
+        </h2>
         <p class="text-center mb-4 text-gray-300">
-          Вы точно хотите удалить выбранный товар? Отменить данное действие будет невозможно.
+          {{ itemToDelete === null
+            ? 'Вы точно хотите очистить корзину? Все товары будут удалены без возможности восстановления.'
+            : 'Вы точно хотите удалить выбранный товар? Отменить данное действие будет невозможно.' }}
         </p>
         <div class="flex justify-around">
           <button
@@ -129,7 +143,7 @@
             class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
             @click="confirmDelete"
           >
-            Удалить
+            {{ itemToDelete === null ? 'Очистить' : 'Удалить' }}
           </button>
         </div>
       </div>
@@ -198,13 +212,15 @@ function closeModal() {
 }
 
 function confirmDelete() {
-  if (itemToDelete.value) {
+  if (itemToDelete.value === null) {
+    cartItems.value = [];
+  } else {
     const idx = cartItems.value.findIndex(i => i.id === itemToDelete.value.id);
     if (idx !== -1) {
       cartItems.value.splice(idx, 1);
-      saveCart();
     }
   }
+  saveCart();
   closeModal();
 }
 </script>

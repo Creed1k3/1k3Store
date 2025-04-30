@@ -17,11 +17,11 @@
     <div class="content">
       <div class="dot-list">
         <span
-          v-for="(color, index) in product.colors"
-          :key="index"
+          v-for="(color, i) in product.colors"
+          :key="i"
           class="dot"
           :style="{ backgroundColor: color }"
-        ></span>
+        />
       </div>
 
       <h2
@@ -36,13 +36,24 @@
 
       <div class="actions">
         <div class="price-wrapper">
-          <span class="product-price">{{ product.price }}</span>
+          <span class="product-price">{{ formattedPrice }}</span>
           <span class="currency">₽</span>
         </div>
-        <button class="add-cart-btn" @click="addToCart">
+
+        <button
+          v-if="cartQuantity === 0"
+          class="add-cart-btn"
+          @click="addToCart"
+        >
           <span class="btn-icon">🛒</span>
           <span class="btn-text">В корзину</span>
         </button>
+
+        <div v-else class="counter-wrapper">
+          <button class="counter-btn" @click="decrease">–</button>
+          <span class="counter">{{ cartQuantity }}</span>
+          <button class="counter-btn" @click="increase">+</button>
+        </div>
       </div>
     </div>
   </div>
@@ -50,33 +61,66 @@
 
 <script>
 import Cookies from 'js-cookie';
+import Toastify from 'toastify-js';
+import 'toastify-js/src/toastify.css';
 
 export default {
   name: 'ProductCard',
   props: {
-    product: { type: Object, required: true },
+    product: { type: Object, required: true }
   },
   data() {
     return {
       isExpanded: false,
+      cartQuantity: 0
     };
+  },
+  computed: {
+    formattedPrice() {
+      return Number(this.product.price).toLocaleString('ru-RU');
+    }
+  },
+  mounted() {
+    this.syncQuantity();
   },
   methods: {
     toggleExpanded() {
       this.isExpanded = !this.isExpanded;
     },
-    addToCart() {
-      // Получаем корзину из куки
+
+    syncQuantity() {
       let cart = [];
       try {
-        const raw = Cookies.get('cart');
-        cart = raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        cart = [];
-      }
+        cart = JSON.parse(Cookies.get('cart') || '[]');
+      } catch {}
+      const found = cart.find(i => i.id === this.product.id);
+      this.cartQuantity = found ? found.quantity : 0;
+    },
 
-      // Ищем товар
-      const idx = cart.findIndex(item => item.id === this.product.id);
+    saveCart(cart) {
+      Cookies.set('cart', JSON.stringify(cart), { expires: 7 });
+      this.syncQuantity();
+    },
+
+    showToast(message) {
+      Toastify({
+        text: message,
+        duration: 1000,
+        gravity: 'bottom',
+        position: 'right',
+        style: {
+          background: '#21273c',
+          color: '#fff'
+        }
+      }).showToast();
+    },
+
+    addToCart() {
+      let cart = [];
+      try {
+        cart = JSON.parse(Cookies.get('cart') || '[]');
+      } catch {}
+      const idx = cart.findIndex(i => i.id === this.product.id);
       if (idx !== -1) {
         cart[idx].quantity += 1;
       } else {
@@ -86,22 +130,49 @@ export default {
           image: this.product.image,
           price: this.product.price,
           color: this.product.colors[0] || 'Не указан',
-          quantity: 1,
+          quantity: 1
         });
       }
-
-      // Сохраняем обратно в куки на 7 дней
-      Cookies.set('cart', JSON.stringify(cart), { expires: 7 });
-
+      this.saveCart(cart);
+      this.showToast('Товар добавлен в корзину');
       this.$emit('added-to-cart', cart);
-      alert('Товар добавлен в корзину!');
     },
-  },
+
+    increase() {
+      let cart = [];
+      try {
+        cart = JSON.parse(Cookies.get('cart') || '[]');
+      } catch {}
+      const idx = cart.findIndex(i => i.id === this.product.id);
+      if (idx !== -1) {
+        cart[idx].quantity += 1;
+        this.saveCart(cart);
+        this.showToast('Количество увеличено');
+      }
+    },
+
+    decrease() {
+      let cart = [];
+      try {
+        cart = JSON.parse(Cookies.get('cart') || '[]');
+      } catch {}
+      const idx = cart.findIndex(i => i.id === this.product.id);
+      if (idx !== -1) {
+        cart[idx].quantity -= 1;
+        if (cart[idx].quantity <= 0) {
+          cart.splice(idx, 1);
+          this.showToast('Товар удалён из корзины');
+        } else {
+          this.showToast('Количество уменьшено');
+        }
+        this.saveCart(cart);
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
-/* Стили оставляем без изменений, как в твоём оригинале */
 .product-card {
   width: 260px;
   background: #ffffff;
@@ -123,7 +194,7 @@ export default {
   height: 200px;
   border-radius: 12px;
   object-fit: cover;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
 }
 
 .favorite-btn {
@@ -166,7 +237,7 @@ export default {
 h2 {
   font-size: 16px;
   font-weight: 500;
-  color: #000000;
+  color: #000;
   line-height: 1.4;
   margin: 8px 0;
   height: 3em;
@@ -198,24 +269,25 @@ h2.expanded {
   margin-top: 12px;
 }
 
-.product-price {
-  font-size: 20px;
-  font-weight: 700;
-  color: #000000;
-  line-height: 1;
-}
-.currency {
-  font-size: 12px;
-  color: #000000;
-  vertical-align: super;
-  margin-left: 2px;
-}
 .price-wrapper {
   display: inline-flex;
   align-items: baseline;
   background: #f3f6fa;
   padding: 4px 8px;
   border-radius: 6px;
+}
+
+.product-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1;
+}
+.currency {
+  font-size: 12px;
+  color: #000;
+  vertical-align: super;
+  margin-left: 2px;
 }
 
 .add-cart-btn {
@@ -229,12 +301,39 @@ h2.expanded {
   font-size: 12px;
   font-weight: 500;
   border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(32,41,58,0.3);
+  box-shadow: 0 2px 4px rgba(32, 41, 58, 0.3);
   text-transform: none;
 }
 .add-cart-btn:hover {
   background: #1a2132;
 }
+
+.counter-wrapper {
+  display: flex;
+  align-items: center;
+  background: #20293a;
+  color: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.counter-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: #1a2132;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.counter-btn:hover {
+  background: #161f2a;
+}
+.counter {
+  padding: 0 12px;
+  font-size: 14px;
+}
+
 .btn-icon {
   font-size: 16px;
 }
