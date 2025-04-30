@@ -142,16 +142,16 @@ export default {
   },
   methods: {
     backtohome() {
-      window.location.replace('/');
+      window.location.href = '/';
     },
     handleSearch() {
       console.log('Поисковый запрос:', this.searchQuery);
     },
     openCart() {
-      window.location.replace('/cart');
+      window.location.href = '/cart';
     },
     openfavorites() {
-      window.location.replace('/favorites');
+      window.location.href = '/favorites';
     },
     openLoginModal() {
       this.isLoginModalOpen = true;

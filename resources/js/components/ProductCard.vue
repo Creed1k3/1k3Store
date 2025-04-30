@@ -1,6 +1,5 @@
 <template>
   <div class="product-card">
-    <!-- Обёртка для изображения с «вырезанным» сердечком -->
     <div class="image-wrapper">
       <img :src="product.image" alt="Product Image" />
       <button class="favorite-btn" @click="$emit('toggle-favorite', product)">
@@ -16,7 +15,6 @@
     </div>
 
     <div class="content">
-      <!-- Цветовые точки -->
       <div class="dot-list">
         <span
           v-for="(color, index) in product.colors"
@@ -26,7 +24,6 @@
         ></span>
       </div>
 
-      <!-- Название товара -->
       <h2
         @click="toggleExpanded"
         :class="{ expanded: isExpanded }"
@@ -37,13 +34,12 @@
 
       <hr class="separator" />
 
-      <!-- Цена и стилизованная кнопка «В корзину» -->
       <div class="actions">
         <div class="price-wrapper">
           <span class="product-price">{{ product.price }}</span>
           <span class="currency">₽</span>
         </div>
-        <button class="add-cart-btn" @click="$emit('add-to-cart', product)">
+        <button class="add-cart-btn" @click="addToCart">
           <span class="btn-icon">🛒</span>
           <span class="btn-text">В корзину</span>
         </button>
@@ -53,6 +49,8 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie';
+
 export default {
   name: 'ProductCard',
   props: {
@@ -60,18 +58,50 @@ export default {
   },
   data() {
     return {
-      isExpanded: false, // Статус разворачивания текста
+      isExpanded: false,
     };
   },
   methods: {
     toggleExpanded() {
-      this.isExpanded = !this.isExpanded; // Переключаем состояние
+      this.isExpanded = !this.isExpanded;
+    },
+    addToCart() {
+      // Получаем корзину из куки
+      let cart = [];
+      try {
+        const raw = Cookies.get('cart');
+        cart = raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        cart = [];
+      }
+
+      // Ищем товар
+      const idx = cart.findIndex(item => item.id === this.product.id);
+      if (idx !== -1) {
+        cart[idx].quantity += 1;
+      } else {
+        cart.push({
+          id: this.product.id,
+          name: this.product.title,
+          image: this.product.image,
+          price: this.product.price,
+          color: this.product.colors[0] || 'Не указан',
+          quantity: 1,
+        });
+      }
+
+      // Сохраняем обратно в куки на 7 дней
+      Cookies.set('cart', JSON.stringify(cart), { expires: 7 });
+
+      this.$emit('added-to-cart', cart);
+      alert('Товар добавлен в корзину!');
     },
   },
 };
 </script>
 
 <style scoped>
+/* Стили оставляем без изменений, как в твоём оригинале */
 .product-card {
   width: 260px;
   background: #ffffff;
@@ -133,27 +163,25 @@ export default {
   border: 1px solid #ccc;
 }
 
-/* Название товара */
 h2 {
   font-size: 16px;
   font-weight: 500;
   color: #000000;
   line-height: 1.4;
   margin: 8px 0;
-  height: 3em; /* Высота, чтобы занять 2-3 строки */
+  height: 3em;
   overflow: hidden;
-  text-overflow: ellipsis; /* Обрезка текста с троеточием */
-  white-space: normal; /* Текст может переноситься */
+  text-overflow: ellipsis;
+  white-space: normal;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Показывать только 2 строки текста */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
 h2.expanded {
-  -webkit-line-clamp: unset; /* Разворачиваем текст */
-  height: unset; /* Разворачиваем высоту */
+  -webkit-line-clamp: unset;
+  height: unset;
 }
 
 .separator {
