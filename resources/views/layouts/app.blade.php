@@ -4,7 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])</head>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+      <style>
+    @font-face {
+      font-family: 'GTEestiPro';
+      /* Путь относительный к public/ */
+      src: url('/fonts/GTEestiPro.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    /* Назначаем глобально */
+    html, body {
+      font-family: 'GTEestiPro', Arial, sans-serif;
+    }
+  </style>
+</head>
 <body>
 <div class="wrapper" id="app">
     <header-component></header-component>

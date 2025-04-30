@@ -70,9 +70,12 @@
             <FavoritesIcon />
             <span>Избранное</span>
           </div>
-          <div class="nav-button" @click="openCart">
+          <div class="nav-button cart-button" @click="openCart">
             <CartIcon />
             <span>Корзина</span>
+            <span v-if="cartCount > 0" class="cart-badge">
+              {{ cartCount > 99 ? '99+' : cartCount }}
+            </span>
           </div>
           <div class="nav-button" @click="openLoginModal">
             <AvatarIcon />
@@ -94,6 +97,7 @@ import FavoritesIcon from '@/assets/images/headerfavorites.svg';
 import CartIcon from '@/assets/images/headercart.svg';
 import AvatarIcon from '@/assets/images/defaultavatar.svg';
 import LoginModal from './modals/LoginModal.vue';
+import Cookies from 'js-cookie';
 
 export default {
   name: 'AppHeader',
@@ -109,6 +113,7 @@ export default {
       isLoginModalOpen: false,
       isCatalogOpen: false,
       activeCategoryId: null,
+      cartCount: 0,
       categories: [
         {
           id: 1,
@@ -178,16 +183,31 @@ export default {
     handleOutsideClick(event) {
       const catalogDropdown = this.$refs.catalogDropdown;
       const catalogBtn = this.$refs.logoCatalog;
-      if (catalogDropdown && catalogBtn && !catalogBtn.contains(event.target) && !catalogDropdown.contains(event.target)) {
+      if (
+        catalogDropdown &&
+        catalogBtn &&
+        !catalogBtn.contains(event.target) &&
+        !catalogDropdown.contains(event.target)
+      ) {
         this.isCatalogOpen = false;
       }
+    },
+    updateCartCount() {
+      let cart = [];
+      try {
+        cart = JSON.parse(Cookies.get('cart') || '[]');
+      } catch {}
+      this.cartCount = cart.reduce((sum, i) => sum + (i.quantity || 0), 0);
     }
   },
   mounted() {
     document.addEventListener('click', this.handleOutsideClick);
+    this.updateCartCount();
+    window.addEventListener('cart-updated', this.updateCartCount);
   },
   beforeDestroy() {
     document.removeEventListener('click', this.handleOutsideClick);
+    window.removeEventListener('cart-updated', this.updateCartCount);
   }
 };
 </script>
@@ -236,8 +256,7 @@ export default {
   gap: 12px;
 }
 
-.home-button,
-.catalog-btn {
+.home-button, .catalog-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -254,23 +273,21 @@ export default {
 
 .home-button {
   width: 56px;
-  padding: 0;
+ 	padding: 0;
 }
 
-.home-button:hover,
-.catalog-btn:hover {
+.home-button:hover, .catalog-btn:hover {
   background-color: #1b2532;
-  transform: translateY(-2px);
+ 	transform: translateY(-2px);
 }
 
 .home-icon {
-  width: 60%;
-  height: auto;
+  width: 60%; height: auto;
 }
 
 .catalog-btn {
   font-size: 16px;
-  font-weight: 600;
+ 	font-weight: 600;
 }
 
 .catalog-dropdown {
@@ -380,5 +397,30 @@ export default {
 .nav-button span {
   font-size: 12px;
   color: #20293a;
+}
+
+.cart-button {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  /* Размещаем над иконкой, не перекрывая */
+  top: -4px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background-color: #21273c;
+  /* Числа белые и контрастные */
+  color: #ffffff !important;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: center;
+  border-radius: 11px;
+  border: 1px solid #ffffff;
+  /* лёгкая тень для текста */
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 </style>

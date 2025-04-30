@@ -100,6 +100,7 @@ export default {
     saveCart(cart) {
       Cookies.set('cart', JSON.stringify(cart), { expires: 7 });
       this.syncQuantity();
+      window.dispatchEvent(new CustomEvent('cart-updated'));
     },
 
     showToast(message) {

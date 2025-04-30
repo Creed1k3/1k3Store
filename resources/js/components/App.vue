@@ -11,8 +11,18 @@ export default {
 </script>
 
 <style scoped>
+/* Подключаем шрифт GTEestiPro локально */
+@font-face {
+  font-family: 'GTEestiPro';
+  src: url('@/assets/fonts/GTEestiPro.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  /* Задаем глобальную для компонента */
+  font-family: 'GTEestiPro', Arial, sans-serif;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;

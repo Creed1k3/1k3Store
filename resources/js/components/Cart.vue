@@ -119,10 +119,14 @@
     </div>
 
     <!-- Модалка -->
-    <div v-if="showModal" @click.self="closeModal" class="fixed inset-0 z-50 flex items-center justify-center">
+    <div
+      v-if="showModal"
+      @click.self="closeModal"
+      class="fixed inset-0 z-50 flex items-center justify-center"
+    >
       <div
         class="bg-gray-800 p-6 rounded-lg w-96 transition-transform duration-500 ease-in-out transform shadow-xl"
-        :class="{'scale-95': !showModal, 'scale-100': showModal}"
+        :class="{ 'scale-95': !showModal, 'scale-100': showModal }"
       >
         <h2 class="text-xl font-semibold mb-4 text-center text-white">
           {{ itemToDelete === null ? 'Очистить корзину' : 'Удалить товар' }}
@@ -176,6 +180,7 @@ function loadCart() {
 
 function saveCart() {
   Cookies.set('cart', JSON.stringify(cartItems.value), { expires: 7 });
+  window.dispatchEvent(new CustomEvent('cart-updated'));
 }
 
 function changeQty(item, qty) {
@@ -199,7 +204,10 @@ const discount = computed(() =>
 );
 const total = computed(() => subTotal.value - discount.value);
 
-onMounted(loadCart);
+onMounted(() => {
+  loadCart();
+  window.addEventListener('cart-updated', loadCart);
+});
 
 function openDeleteModal(item) {
   itemToDelete.value = item;
