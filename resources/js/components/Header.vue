@@ -15,7 +15,7 @@
                 text-anchor="middle"
                 font-weight="700"
               >
-                1k3
+              Ph-
               </text>
             </svg>
           </button>

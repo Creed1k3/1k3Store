@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Product;
+
 
 Route::get('/', function () {
     return view('index');
@@ -17,3 +19,7 @@ Route::get('/cart', function () {
     return view('cart');
 });
 
+Route::get('/product/{id}', function ($id) {
+    $product = Product::findOrFail($id);
+    return view('product', ['product' => $product]);
+});

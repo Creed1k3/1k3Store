@@ -12,7 +12,6 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Товары в корзине -->
       <div class="md:col-span-2 space-y-4">
         <div class="flex justify-between text-gray-500 font-medium px-4">
           <span class="w-3/4 text-left">Продукт</span>
@@ -25,14 +24,12 @@
           class="flex border rounded-xl shadow w-full overflow-hidden transition duration-300 ease-in-out"
           :class="{'bg-gray-100': !item.isActive, 'opacity-50': !item.isActive}"
         >
-          <!-- Информация о продукте -->
           <div class="flex items-center justify-between p-4 flex-1">
             <div class="flex items-center gap-4 relative">
               <input 
                 type="checkbox" 
                 v-model="item.isActive" 
                 class="form-checkbox h-5 w-5 text-blue-600 absolute top-0 left-0 z-10"
-                :title="item.isActive ? 'Активный' : 'Неактивный'"
                 @change="saveCart"
               />
               <img 
@@ -46,44 +43,40 @@
               <div class="text-sm text-gray-500 text-left">Набор: Цвет {{ item.color }}</div>
             </div>
             <div class="flex items-center gap-4">
-              <div class="flex items-center border rounded px-2 py-1">
+              <!-- ОБНОВЛЁННЫЙ КРУГ С ЧЁРНОЙ ОБВОДКОЙ -->
+              <div class="flex items-center justify-center border border-black rounded-full w-28 h-10">
                 <button
-                  class="px-2 text-lg font-bold text-gray-700 hover:text-black"
-                  @click="changeQty(item, item.quantity - 1)"
-                  :disabled="item.quantity <= 1"
+                  class="text-lg font-bold text-gray-700 hover:text-black px-3"
+                  @click="handleMinus(item)"
                 >
                   −
                 </button>
-                <span class="px-2 w-6 text-center">{{ item.quantity }}</span>
+                <span class="w-6 text-center font-medium">{{ item.quantity }}</span>
                 <button
-                  class="px-2 text-lg font-bold text-gray-700 hover:text-black"
+                  class="text-lg font-bold text-gray-700 hover:text-black px-3"
                   @click="changeQty(item, item.quantity + 1)"
                 >
                   +
                 </button>
               </div>
-              <div class="font-semibold whitespace-nowrap">
+              <div class="font-semibold whitespace-nowrap w-24 text-right">
                 {{ item.isActive ? formatNumber(item.quantity * item.price) : '0' }} ₽
               </div>
             </div>
           </div>
 
-          <!-- Действия -->
           <div class="w-[80px] flex items-center justify-center gap-3 px-2 border-l">
             <button
               v-if="item.isActive"
               class="text-red-500 hover:text-red-700"
-              title="Удалить из корзины"
               @click="openDeleteModal(item)"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-
             <button
               class="text-pink-500 hover:text-pink-700"
-              title="В избранное"
               @click="$emit('toggle-favorite', item)"
             >
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -94,7 +87,6 @@
         </div>
       </div>
 
-      <!-- Сводка заказа -->
       <div class="p-6 border rounded-xl shadow">
         <h2 class="text-xl font-semibold mb-4 text-left">Сводка заказа</h2>
         <div class="space-y-2">
@@ -138,7 +130,7 @@
     <div
       v-if="showModal"
       @click.self="closeModal"
-      class="fixed inset-0 z-50 flex items-center justify-center"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div
         class="bg-gray-800 p-6 rounded-lg w-96 transition-transform duration-500 ease-in-out transform shadow-xl"
@@ -171,7 +163,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import Cookies from 'js-cookie';
@@ -180,7 +171,7 @@ const cartItems = ref([]);
 const discountCode = ref('');
 const validDiscount = ref(false);
 const showModal = ref(false);
-let itemToDelete = ref(null);
+const itemToDelete = ref(null);
 
 function loadCart() {
   try {
@@ -203,6 +194,14 @@ function saveCart() {
 function changeQty(item, qty) {
   item.quantity = Math.max(1, qty);
   saveCart();
+}
+
+function handleMinus(item) {
+  if (item.quantity <= 1) {
+    openDeleteModal(item);
+  } else {
+    changeQty(item, item.quantity - 1);
+  }
 }
 
 function applyDiscount() {
@@ -250,7 +249,6 @@ function confirmDelete() {
 }
 </script>
 
-
 <style scoped>
 .bg-gray-800 {
   background-color: #333333;
@@ -259,4 +257,3 @@ function confirmDelete() {
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
 }
 </style>
-

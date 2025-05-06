@@ -20,6 +20,7 @@ import AdvantagesGrid from './components/AdvantagesGrid.vue';
 import LoginModal from './components/modals/LoginModal.vue';
 import Cart from './components/Cart.vue';
 import Footer from './components/Footer.vue';
+import ProductPage from './components/ProductPage.vue';
 
 const app = createApp({});
 
@@ -37,5 +38,6 @@ app.component('advantages-grid', AdvantagesGrid);
 app.component('login-modal', LoginModal);
 app.component('cart-component', Cart)
 app.component('footer-component', Footer);
+app.component('product-page', ProductPage);
 
 app.mount('#app');

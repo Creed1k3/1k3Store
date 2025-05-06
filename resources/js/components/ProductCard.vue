@@ -1,61 +1,60 @@
 <template>
   <div class="product-card">
-    <div class="image-wrapper">
-      <img :src="product.image" alt="Product Image" />
-      <button class="favorite-btn" @click="$emit('toggle-favorite', product)">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-               2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
-               C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
-               c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+    <div class="card-clickable" @click="goToProduct">
+      <div class="image-wrapper">
+        <img :src="product.image" alt="Product Image" />
+      </div>
+
+      <div class="content">
+        <div class="dot-list">
+          <span
+            v-for="(color, i) in product.colors"
+            :key="i"
+            class="dot"
+            :style="{ backgroundColor: color }"
           />
-        </svg>
-      </button>
+        </div>
+
+        <h2 :class="{ expanded: isExpanded }">
+          {{ product.title }}
+        </h2>
+
+        <hr class="separator" />
+
+        <div class="actions">
+          <div class="price-wrapper">
+            <span class="product-price">{{ formattedPrice }}</span>
+            <span class="currency">₽</span>
+          </div>
+
+          <button
+            v-if="cartQuantity === 0"
+            class="add-cart-btn"
+            @click.stop="addToCart"
+          >
+            <span class="btn-icon">🛒</span>
+            <span class="btn-text">В корзину</span>
+          </button>
+
+          <div v-else class="counter-wrapper">
+            <button class="counter-btn" @click.stop="decrease">–</button>
+            <span class="counter">{{ cartQuantity }}</span>
+            <button class="counter-btn" @click.stop="increase">+</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="content">
-      <div class="dot-list">
-        <span
-          v-for="(color, i) in product.colors"
-          :key="i"
-          class="dot"
-          :style="{ backgroundColor: color }"
+    <button class="favorite-btn" @click="$emit('toggle-favorite', product)">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+             2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+             C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
         />
-      </div>
-
-      <h2
-        @click="toggleExpanded"
-        :class="{ expanded: isExpanded }"
-        title="Нажмите, чтобы увидеть полностью"
-      >
-        {{ product.title }}
-      </h2>
-
-      <hr class="separator" />
-
-      <div class="actions">
-        <div class="price-wrapper">
-          <span class="product-price">{{ formattedPrice }}</span>
-          <span class="currency">₽</span>
-        </div>
-
-        <button
-          v-if="cartQuantity === 0"
-          class="add-cart-btn"
-          @click="addToCart"
-        >
-          <span class="btn-icon">🛒</span>
-          <span class="btn-text">В корзину</span>
-        </button>
-
-        <div v-else class="counter-wrapper">
-          <button class="counter-btn" @click="decrease">–</button>
-          <span class="counter">{{ cartQuantity }}</span>
-          <button class="counter-btn" @click="increase">+</button>
-        </div>
-      </div>
-    </div>
+      </svg>
+    </button>
   </div>
 </template>
 
@@ -84,10 +83,9 @@ export default {
     this.syncQuantity();
   },
   methods: {
-    toggleExpanded() {
-      this.isExpanded = !this.isExpanded;
+    goToProduct() {
+      window.location.href = `/product/${this.product.id}`;
     },
-
     syncQuantity() {
       let cart = [];
       try {
@@ -96,13 +94,11 @@ export default {
       const found = cart.find(i => i.id === this.product.id);
       this.cartQuantity = found ? found.quantity : 0;
     },
-
     saveCart(cart) {
       Cookies.set('cart', JSON.stringify(cart), { expires: 7 });
       this.syncQuantity();
       window.dispatchEvent(new CustomEvent('cart-updated'));
     },
-
     showToast(message) {
       Toastify({
         text: message,
@@ -115,7 +111,6 @@ export default {
         }
       }).showToast();
     },
-
     addToCart() {
       let cart = [];
       try {
@@ -138,7 +133,6 @@ export default {
       this.showToast('Товар добавлен в корзину');
       this.$emit('added-to-cart', cart);
     },
-
     increase() {
       let cart = [];
       try {
@@ -151,7 +145,6 @@ export default {
         this.showToast('Количество увеличено');
       }
     },
-
     decrease() {
       let cart = [];
       try {
@@ -176,12 +169,17 @@ export default {
 <style scoped>
 .product-card {
   width: 260px;
-  background: #ffffff;
+  background: #fff;
   border-radius: 16px;
   overflow: hidden;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid #e4e8f0;
+  position: relative;
+}
+
+.card-clickable {
+  cursor: pointer;
 }
 
 .image-wrapper {
@@ -195,7 +193,6 @@ export default {
   height: 200px;
   border-radius: 12px;
   object-fit: cover;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
 }
 
 .favorite-btn {
@@ -204,7 +201,7 @@ export default {
   right: 8px;
   width: 32px;
   height: 32px;
-  border: none;
+  border: 1px solid black;
   background: inherit;
   border-radius: 50%;
   display: flex;
@@ -239,25 +236,20 @@ h2 {
   font-size: 16px;
   font-weight: 500;
   color: #000;
-  line-height: 1.4;
   margin: 8px 0;
   height: 3em;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 h2.expanded {
   -webkit-line-clamp: unset;
-  height: unset;
+  height: auto;
 }
 
 .separator {
-  border: none;
   height: 1.5px;
   background: rgba(0, 0, 0, 0.12);
   margin: 12px 0;
@@ -267,7 +259,6 @@ h2.expanded {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 12px;
 }
 
 .price-wrapper {
@@ -281,12 +272,9 @@ h2.expanded {
 .product-price {
   font-size: 20px;
   font-weight: 700;
-  color: #000;
-  line-height: 1;
 }
 .currency {
   font-size: 12px;
-  color: #000;
   vertical-align: super;
   margin-left: 2px;
 }
@@ -302,8 +290,6 @@ h2.expanded {
   font-size: 12px;
   font-weight: 500;
   border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(32, 41, 58, 0.3);
-  text-transform: none;
 }
 .add-cart-btn:hover {
   background: #1a2132;
@@ -312,33 +298,21 @@ h2.expanded {
 .counter-wrapper {
   display: flex;
   align-items: center;
-  background: #20293a;
-  color: #fff;
-  border-radius: 6px;
+  border: 1px solid black;
+  border-radius: 50px;
   overflow: hidden;
 }
 .counter-btn {
   width: 28px;
   height: 28px;
+  background: none;
+  color: #000;
   border: none;
-  background: #1a2132;
-  color: #fff;
   font-size: 18px;
-  line-height: 1;
   cursor: pointer;
-}
-.counter-btn:hover {
-  background: #161f2a;
 }
 .counter {
   padding: 0 12px;
   font-size: 14px;
-}
-
-.btn-icon {
-  font-size: 16px;
-}
-.btn-text {
-  line-height: 1;
 }
 </style>
