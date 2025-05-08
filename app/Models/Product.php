@@ -8,9 +8,36 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    
-    public $timestamps = false;
 
-    protected $fillable = ['image', 'title', 'price'];
+    protected $fillable = ['category_id', 'title', 'description', 'price', 'old_price', 'slug', 'sku'];
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function colors()
+    {
+        return $this->hasMany(ProductColor::class);
+    }
+
+    public function tags()
+    {
+        return $this->hasMany(ProductTag::class);
+    }
+
+    public function discounts()
+    {
+        return $this->hasMany(ProductDiscount::class);
+    }
+
+    public function characteristics()
+    {
+        return $this->hasMany(ProductCharacteristic::class);
+    }
+
+    public function relatedProducts()
+    {
+        return $this->belongsToMany(Product::class, 'related_products', 'product_id', 'related_product_id');
+    }
 }

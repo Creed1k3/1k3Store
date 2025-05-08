@@ -7,14 +7,20 @@ use App\Models\Product;
 
 class ProductsTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        // Создание 50 случайных продуктов
-        Product::factory()->count(50)->create();
+        Product::factory()
+            ->count(10)
+            ->afterCreating(function (Product $product) {
+                $colors = ['black', 'white', 'silver', 'blue', 'red'];
+                $selectedColors = array_rand(array_flip($colors), 2);
+
+                foreach ((array) $selectedColors as $color) {
+                    $product->colors()->create([
+                        'color' => $color
+                    ]);
+                }
+            })
+            ->create();
     }
 }
