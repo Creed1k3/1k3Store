@@ -2,13 +2,15 @@
   <div class="product-card">
     <div class="card-clickable" @click="goToProduct">
       <div class="image-wrapper">
-        <img :src="product.image" alt="Product Image" />
+        <!-- Показываем картинку: если есть цветовые варианты, берём image_url первого, иначе — main image -->
+        <img :src="variantImage || product.image" alt="Product Image" />
       </div>
 
       <div class="content">
         <div class="dot-list">
+          <!-- Используем parsedColors — массив строк -->
           <span
-            v-for="(color, i) in product.colors"
+            v-for="(color, i) in parsedColors"
             :key="i"
             class="dot"
             :style="{ backgroundColor: color }"
@@ -59,9 +61,9 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
-import Toastify from 'toastify-js';
-import 'toastify-js/src/toastify.css';
+import Cookies from 'js-cookie'
+import Toastify from 'toastify-js'
+import 'toastify-js/src/toastify.css'
 
 export default {
   name: 'ProductCard',
@@ -72,32 +74,45 @@ export default {
     return {
       isExpanded: false,
       cartQuantity: 0
-    };
+    }
   },
   computed: {
     formattedPrice() {
-      return Number(this.product.price).toLocaleString('ru-RU');
+      return Number(this.product.price).toLocaleString('ru-RU')
+    },
+    // массив строк-цветов
+    parsedColors() {
+      return Array.isArray(this.product.colors)
+        ? this.product.colors.map(c => c.color)
+        : []
+    },
+    // изображение варианта (первый цветовой вариант)
+    variantImage() {
+      if (Array.isArray(this.product.colors) && this.product.colors.length) {
+        return this.product.colors[0].image_url
+      }
+      return null
     }
   },
   mounted() {
-    this.syncQuantity();
+    this.syncQuantity()
   },
   methods: {
     goToProduct() {
-      window.location.href = `/product/${this.product.id}`;
+      window.location.href = `/product/${this.product.slug || this.product.id}`
     },
     syncQuantity() {
-      let cart = [];
+      let cart = []
       try {
-        cart = JSON.parse(Cookies.get('cart') || '[]');
+        cart = JSON.parse(Cookies.get('cart') || '[]')
       } catch {}
-      const found = cart.find(i => i.id === this.product.id);
-      this.cartQuantity = found ? found.quantity : 0;
+      const found = cart.find(i => i.id === this.product.id)
+      this.cartQuantity = found ? found.quantity : 0
     },
     saveCart(cart) {
-      Cookies.set('cart', JSON.stringify(cart), { expires: 7 });
-      this.syncQuantity();
-      window.dispatchEvent(new CustomEvent('cart-updated'));
+      Cookies.set('cart', JSON.stringify(cart), { expires: 7 })
+      this.syncQuantity()
+      window.dispatchEvent(new CustomEvent('cart-updated'))
     },
     showToast(message) {
       Toastify({
@@ -109,62 +124,66 @@ export default {
           background: '#21273c',
           color: '#fff'
         }
-      }).showToast();
+      }).showToast()
     },
     addToCart() {
-      let cart = [];
+      let cart = []
       try {
-        cart = JSON.parse(Cookies.get('cart') || '[]');
+        cart = JSON.parse(Cookies.get('cart') || '[]')
       } catch {}
-      const idx = cart.findIndex(i => i.id === this.product.id);
+      const idx = cart.findIndex(i => i.id === this.product.id)
+      const color = this.parsedColors[0] || 'Не указан'
+      const image = this.variantImage || this.product.image
+
       if (idx !== -1) {
-        cart[idx].quantity += 1;
+        cart[idx].quantity += 1
       } else {
         cart.push({
           id: this.product.id,
           name: this.product.title,
-          image: this.product.image,
           price: this.product.price,
-          color: this.product.colors[0] || 'Не указан',
+          color,
+          image,
           quantity: 1
-        });
+        })
       }
-      this.saveCart(cart);
-      this.showToast('Товар добавлен в корзину');
-      this.$emit('added-to-cart', cart);
+      this.saveCart(cart)
+      this.showToast('Товар добавлен в корзину')
+      this.$emit('added-to-cart', cart)
     },
     increase() {
-      let cart = [];
+      let cart = []
       try {
-        cart = JSON.parse(Cookies.get('cart') || '[]');
+        cart = JSON.parse(Cookies.get('cart') || '[]')
       } catch {}
-      const idx = cart.findIndex(i => i.id === this.product.id);
+      const idx = cart.findIndex(i => i.id === this.product.id)
       if (idx !== -1) {
-        cart[idx].quantity += 1;
-        this.saveCart(cart);
-        this.showToast('Количество увеличено');
+        cart[idx].quantity += 1
+        this.saveCart(cart)
+        this.showToast('Количество увеличено')
       }
     },
     decrease() {
-      let cart = [];
+      let cart = []
       try {
-        cart = JSON.parse(Cookies.get('cart') || '[]');
+        cart = JSON.parse(Cookies.get('cart') || '[]')
       } catch {}
-      const idx = cart.findIndex(i => i.id === this.product.id);
+      const idx = cart.findIndex(i => i.id === this.product.id)
       if (idx !== -1) {
-        cart[idx].quantity -= 1;
+        cart[idx].quantity -= 1
         if (cart[idx].quantity <= 0) {
-          cart.splice(idx, 1);
-          this.showToast('Товар удалён из корзины');
+          cart.splice(idx, 1)
+          this.showToast('Товар удалён из корзины')
         } else {
-          this.showToast('Количество уменьшено');
+          this.showToast('Количество уменьшено')
         }
-        this.saveCart(cart);
+        this.saveCart(cart)
       }
     }
   }
-};
+}
 </script>
+
 
 <style scoped>
 .product-card {
