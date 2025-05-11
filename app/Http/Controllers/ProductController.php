@@ -13,10 +13,18 @@ class ProductController extends Controller
         return view('catalog', compact('products'));
     }
 
-    public function getProducts()
-    {
-        // Новый метод для отдачи продуктов через API
-        $products = Product::all();
-        return response()->json($products);
-    }
+public function show(Product $product)
+{
+    $product->load([
+        'category.parent',        // для хлебных крошек
+        'images',                 // URL’ы картинок
+        'colors',                 // цвета и image_url
+        'reviews',                // отзывы
+        'characteristics',        // технические характеристики
+        'discounts',              // если нужны расчёты скидок
+        'relatedProducts'         // для списка похожих товаров
+    ]);
+
+    return view('product', compact('product'));
+}
 }

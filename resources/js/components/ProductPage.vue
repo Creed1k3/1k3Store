@@ -1,12 +1,13 @@
 <template>
-  <div class="product-page">
+  <div class="product-page" v-if="product">
     <!-- Breadcrumbs -->
     <nav class="breadcrumbs">
       <ul>
         <li><a href="/catalog">Каталог</a></li>
-        <li><a href="/catalog/beauty">Красота и здоровье</a></li>
-        <li><a href="/catalog/beauty/shaving">Бритье, стрижка и эпиляция</a></li>
-        <li>Электробритва {{ product.title }}</li>
+        <li v-for="(crumb, i) in product.categoryTrail" :key="i">
+          <a :href="crumb.url">{{ crumb.name }}</a>
+        </li>
+        <li>{{ product.title }}</li>
       </ul>
     </nav>
 
@@ -16,14 +17,14 @@
     <!-- Кнопка "избранное" -->
     <button class="favorite-btn" @click="toggleFavorite">
       <svg v-if="!favorite" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#ff756b" stroke-width="2"/>
+        <path :d="heartOutline" fill="none" stroke="#ff756b" stroke-width="2"/>
       </svg>
       <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="filled">
-        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff756b"/>
+        <path :d="heartFilled" fill="#ff756b"/>
       </svg>
     </button>
 
-    <!-- Контент -->
+    <!-- Основной контент -->
     <div class="content-grid">
       <div class="left">
         <div class="main-image">
@@ -41,134 +42,103 @@
           </div>
         </div>
       </div>
+
       <div class="right">
-        <p class="desc">{{ longDescription }}</p>
+        <p class="desc">{{ product.longDescription }}</p>
+
         <div class="price-block">
-          <span class="price">$ {{ product.price.toFixed(2) }}</span>
-          <span v-if="product.oldPrice" class="old-price">$ {{ product.oldPrice.toFixed(2) }}</span>
+          <span class="price">{{ formatPrice(product.price) }}</span>
+          <span v-if="product.oldPrice" class="old-price">{{ formatPrice(product.oldPrice) }}</span>
         </div>
-        <div class="rating">⭐⭐⭐⭐☆ ({{ product.reviews.length }} отзывов)</div>
-        <div class="colors">
+
+        <div class="rating">
+          <span v-for="n in 5" :key="n">
+            {{ n <= product.averageRating ? '★' : '☆' }}
+          </span>
+          ({{ product.reviews.length }} отзывов)
+        </div>
+
+        <div class="colors" v-if="product.colors.length">
           <span class="label">Цвета:</span>
           <button
-            v-for="(c, i) in product.colors"
-            :key="i"
+            v-for="(c, idx) in product.colors"
+            :key="idx"
             class="color-btn"
-            :style="{ background: c }"
+            :style="{ background: c.color }"
+            @click="setColorImage(c.image_url)"
           ></button>
         </div>
+
         <div class="actions">
           <button class="btn-buy">Купить</button>
           <button class="btn-basket">В корзину</button>
         </div>
-        <div class="info">
-          <p>Отправка: <strong>5–7 недель</strong> <a href="#">Почему?</a></p>
-          <p>Доставка на дом — $10</p>
-        </div>
-      </div>
-    </div>
 
-    <!-- Название секции Характеристики -->
-    <div class="section-title">
-      <h2>Характеристики</h2>
+        <!-- <div class="info">
+          <p>Отправка: <strong>{{ product.shipping.min }}–{{ product.shipping.max }} {{ product.shipping.unit }}</strong> <a href="#">Почему?</a></p>
+          <p>Доставка на дом — {{ formatPrice(product.shipping.cost) }}</p>
+        </div> -->
+      </div>
     </div>
 
     <!-- Характеристики -->
-    <div class="section-box">
-      <div class="section characteristics">
-        <div class="characteristics-grid">
-          <div class="char-item" v-for="char in characteristics" :key="char.name">
-            <span class="char-name">{{ char.name }}</span>
-            <span class="char-value">{{ char.value }}</span>
-          </div>
+    <section class="section-box">
+      <h2 class="section-title">Характеристики</h2>
+      <div class="characteristics-grid">
+        <div class="char-item" v-for="(char, i) in product.characteristics" :key="i">
+          <span class="char-name">{{ char.name }}</span>
+          <span class="char-value">{{ char.value }}</span>
         </div>
       </div>
-    </div>
-
-    <!-- Название секции Отзывы -->
-    <div class="section-title">
-      <h2>Отзывы</h2>
-    </div>
+    </section>
 
     <!-- Отзывы -->
-    <div class="section-box">
-      <div class="section reviews large-section">
-        <p>Средний рейтинг: <strong>{{ averageRating }}/5</strong>. Последние отзывы от реальных покупателей:</p>
-        <ul class="reviews-list">
-          <li v-for="(review, index) in recentReviews" :key="index">
-            <div class="review-author">{{ review.author }}</div>
-            <div class="review-rating">{{ review.rating }} ⭐</div>
-            <div class="review-text">"{{ review.text }}"</div>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <section class="section-box">
+      <h2 class="section-title">Отзывы</h2>
+      <p>Средний рейтинг: <strong>{{ product.averageRating }}/5</strong>. Последние отзывы:</p>
+      <ul class="reviews-list">
+        <li v-for="(rev, i) in product.recentReviews" :key="i">
+          <div class="review-author">{{ rev.author }}</div>
+          <div class="review-rating">{{ rev.rating }} ⭐</div>
+          <div class="review-text">"{{ rev.text }}"</div>
+        </li>
+      </ul>
+    </section>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ProductPage',
+  props: {
+    product: { type: Object, required: true }
+  },
   data() {
     return {
       activeImageIndex: 0,
       favorite: false,
-      product: {
-        title: 'Polaris PMR 0304R PRO 5',
-        price: 149.99,
-        oldPrice: 179.99,
-        images: [
-          'https://picsum.photos/700/500?random=21',
-          'https://picsum.photos/700/500?random=22',
-          'https://picsum.photos/700/500?random=23',
-        ],
-        colors: ['#000000', '#ffffff', '#a9a9a9'],
-        reviews: [
-          { author: 'Алексей С.', rating: 5, text: 'Бритва отлично бреет, дергания нет, держит заряд как заявлено.' },
-          { author: 'Марина П.', rating: 4, text: 'Подарила мужу, доволен. Удобная и водонепроницаемая.' },
-          { author: 'Игорь Т.', rating: 5, text: 'Быстрая зарядка, простая чистка. Рекомендую.' },
-        ],
-      },
-      longDescription: 'Электробритва Polaris PMR 0304R PRO 5 оснащена 4D системой повторения контуров...',
-      characteristics: [
-        { name: 'Тип электробритвы', value: 'Роторная' },
-        { name: 'Система бритья', value: 'PRO 5 BLADES, 3 плавающие головки' },
-        { name: 'Повторение контуров', value: '4D адаптация к лицу' },
-        { name: 'Сухое/влажное', value: 'Да' },
-        { name: 'Батарея', value: 'Литиевая, 2000 mAh' },
-        { name: 'Время работы', value: 'до 75 мин' },
-        { name: 'Время зарядки', value: '1.5 ч' },
-        { name: 'Мощность', value: '4 Вт' },
-        { name: 'Нагрев мотора', value: 'Автоотключение при перегреве' },
-        { name: 'Уровень шума', value: '≤ 70 дБ' },
-        { name: 'Индикатор заряда', value: 'LED-дисплей' },
-        { name: 'Водозащита', value: 'IPx6 (мыть под струей воды)' },
-        { name: 'Вес', value: '195 г' },
-        { name: 'Габариты', value: '165×52×50 мм' },
-        { name: 'Гарантия', value: '2 года' },
-        { name: 'Страна производства', value: 'Китай' },
-      ],
-    };
-  },
-  computed: {
-    averageRating() {
-      const sum = this.product.reviews.reduce((acc, r) => acc + r.rating, 0);
-      return (sum / this.product.reviews.length).toFixed(1);
-    },
-    recentReviews() {
-      return this.product.reviews.slice(0, 3);
-    },
+      heartOutline: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
+      heartFilled: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'
+    }
   },
   methods: {
     setActiveImage(i) {
       this.activeImageIndex = i;
     },
+    setColorImage(url) {
+      const idx = this.product.images.indexOf(url);
+      if (idx !== -1) this.activeImageIndex = idx;
+    },
     toggleFavorite() {
       this.favorite = !this.favorite;
     },
-  },
+    formatPrice(val) {
+      return Number(val).toLocaleString('ru-RU');
+    }
+  }
 };
 </script>
+
 
 <style scoped>
 .product-page {

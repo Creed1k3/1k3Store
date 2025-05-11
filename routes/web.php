@@ -19,7 +19,5 @@ Route::get('/cart', function () {
     return view('cart');
 });
 
-Route::get('/product/{id}', function ($id) {
-    $product = Product::findOrFail($id);
-    return view('product', ['product' => $product]);
-});
+Route::get('/product/{product:slug}', [ProductController::class, 'show'])
+     ->name('product.show');

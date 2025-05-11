@@ -25,7 +25,14 @@ class Product extends Model
     {
         return $this->hasMany(ProductTag::class);
     }
-
+    public function images()
+    {
+    return $this->hasMany(ProductImage::class);
+    }
+    public function reviews()
+    {
+    return $this->hasMany(Review::class);
+    }
     public function discounts()
     {
         return $this->hasMany(ProductDiscount::class);
