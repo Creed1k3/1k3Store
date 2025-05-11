@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CatalogController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Product;
 
@@ -8,8 +9,6 @@ use App\Models\Product;
 Route::get('/', function () {
     return view('index');
 })->name('home');
-
-Route::get('/catalog', [ProductController::class, 'index']);
 
 Route::get('/favorites', function () {
     return view('favorites');
@@ -19,5 +18,6 @@ Route::get('/cart', function () {
     return view('cart');
 });
 
-Route::get('/product/{product:slug}', [ProductController::class, 'show'])
-     ->name('product.show');
+Route::prefix('api')->middleware('api')->group(function () {
+Route::get('/product/{product:slug}', [CatalogController::class, 'show'])->name('product.show');  // для отображения продукта
+});

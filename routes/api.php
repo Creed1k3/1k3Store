@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CatalogController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +32,4 @@ Route::middleware('api')->group(function () {
     // Удалить товар из корзины
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart']);
 });
-
+Route::get('/catalog', [CatalogController::class, 'apiIndex']);

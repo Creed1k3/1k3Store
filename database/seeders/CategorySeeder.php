@@ -2,16 +2,26 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
-
+use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
     public function run()
     {
-        // Заполняем таблицу категорий
-        Category::factory()->count(10)->create();  // Создаст 10 случайных категорий
+        // Основные категории электроники
+        $categories = [
+            ['id' => 1, 'name' => 'Смартфоны',          'slug' => 'smartfony'],
+            ['id' => 2, 'name' => 'Ноутбуки',           'slug' => 'noutbuki'],
+            ['id' => 3, 'name' => 'Наушники',           'slug' => 'naushniki'],
+            ['id' => 4, 'name' => 'Телевизоры',         'slug' => 'televizory'],
+            ['id' => 5, 'name' => 'Фотоаппараты',       'slug' => 'fotoapparaty'],
+            ['id' => 6, 'name' => 'Носимые устройства', 'slug' => 'nosimye-ustrojstva'],
+        ];
+
+        foreach ($categories as $cat) {
+            // updateOrCreate гарантирует отсутствие дубликатов
+            Category::updateOrCreate(['id' => $cat['id']], $cat);
+        }
     }
 }
