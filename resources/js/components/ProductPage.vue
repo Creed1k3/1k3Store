@@ -28,7 +28,7 @@
     <div class="content-grid">
       <div class="left">
         <div class="main-image">
-<img :src="product.images[activeImageIndex]?.url || 'default_image.jpg'" alt="Product" />
+          <img :src="product.images[activeImageIndex]?.url || 'default_image.jpg'" alt="Product" />
         </div>
         <div class="thumbnails">
           <div
@@ -38,7 +38,7 @@
             :class="{ selected: idx === activeImageIndex }"
             @click="setActiveImage(idx)"
           >
-             <img :src="img?.url" alt="Thumb" />
+            <img :src="img?.url" alt="Thumb" />
           </div>
         </div>
       </div>
@@ -47,8 +47,42 @@
         <p class="desc">{{ product.longDescription }}</p>
 
         <div class="price-block">
-          <span class="price">{{ formatPrice(product.price) }}</span>
+          <span class="price">{{ formatPrice(product.price) }} ₽</span>
           <span v-if="product.oldPrice" class="old-price">{{ formatPrice(product.oldPrice) }}</span>
+        </div>
+
+        <!-- Вкладки -->
+        <div class="tabs">
+          <button
+            v-for="tab in tabs"
+            :key="tab.key"
+            :class="{ active: activeTab === tab.key }"
+            @click="setTab(tab.key)"
+          >
+            {{ tab.label }}
+          </button>
+        </div>
+
+        <!-- Контент вкладки -->
+        <div class="tab-content">
+          <div v-if="activeTab === 'description'">
+             <p class="desc">{{ product.description }}</p>
+          </div>
+
+          <div v-if="activeTab === 'characteristics'" class="characteristics-grid">
+            <div class="char-item" v-for="(char, i) in product.characteristics" :key="i">
+              <span class="char-name">{{ char.name }}</span>
+              <span class="char-value">{{ char.value }}</span>
+            </div>
+          </div>
+
+          <div v-if="activeTab === 'reviews'" class="reviews-list">
+            <li v-for="(rev, i) in product.recentReviews" :key="i">
+              <div class="review-author">{{ rev.author }}</div>
+              <div class="review-rating">{{ rev.rating }} ⭐</div>
+              <div class="review-text">"{{ rev.text }}"</div>
+            </li>
+          </div>
         </div>
 
         <div class="rating">
@@ -73,37 +107,9 @@
           <button class="btn-buy">Купить</button>
           <button class="btn-basket">В корзину</button>
         </div>
-
-        <!-- <div class="info">
-          <p>Отправка: <strong>{{ product.shipping.min }}–{{ product.shipping.max }} {{ product.shipping.unit }}</strong> <a href="#">Почему?</a></p>
-          <p>Доставка на дом — {{ formatPrice(product.shipping.cost) }}</p>
-        </div> -->
       </div>
     </div>
 
-    <!-- Характеристики -->
-    <section class="section-box">
-      <h2 class="section-title">Характеристики</h2>
-      <div class="characteristics-grid">
-        <div class="char-item" v-for="(char, i) in product.characteristics" :key="i">
-          <span class="char-name">{{ char.name }}</span>
-          <span class="char-value">{{ char.value }}</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Отзывы -->
-    <section class="section-box">
-      <h2 class="section-title">Отзывы</h2>
-      <p>Средний рейтинг: <strong>{{ product.averageRating }}/5</strong>. Последние отзывы:</p>
-      <ul class="reviews-list">
-        <li v-for="(rev, i) in product.recentReviews" :key="i">
-          <div class="review-author">{{ rev.author }}</div>
-          <div class="review-rating">{{ rev.rating }} ⭐</div>
-          <div class="review-text">"{{ rev.text }}"</div>
-        </li>
-      </ul>
-    </section>
   </div>
 </template>
 
@@ -117,16 +123,22 @@ export default {
     return {
       activeImageIndex: 0,
       favorite: false,
+      activeTab: 'description',
+      tabs: [
+        { key: 'description', label: 'Описание' },
+        { key: 'characteristics', label: 'Характеристики' },
+        { key: 'reviews', label: 'Отзывы' }
+      ],
       heartOutline: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
       heartFilled: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'
-    }
+    };
   },
   methods: {
     setActiveImage(i) {
       this.activeImageIndex = i;
     },
     setColorImage(url) {
-      const idx = this.product.images.indexOf(url);
+      const idx = this.product.images.findIndex(img => img.url === url);
       if (idx !== -1) this.activeImageIndex = idx;
     },
     toggleFavorite() {
@@ -134,6 +146,9 @@ export default {
     },
     formatPrice(val) {
       return Number(val).toLocaleString('ru-RU');
+    },
+    setTab(key) {
+      this.activeTab = key;
     }
   }
 };
@@ -404,4 +419,31 @@ export default {
   border-left: 4px solid #e76f51;
   padding-left: 0.5rem;
 }
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.tabs button {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.tabs button.active {
+  background: #264653;
+  color: #fff;
+  border-color: #264653;
+}
+.tabs button:hover {
+  background: #eee;
+}
+
+.color-btn[style*="background: white"] {
+  background: #ddd !important; /* сероватый для белого цвета */
+}
+
 </style>
