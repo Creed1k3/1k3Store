@@ -6,13 +6,6 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        // Это ваш текущий метод для рендеринга Blade-шаблона
-        $products = Product::all();
-        return view('catalog', compact('products'));
-    }
-
 public function show(Product $product)
 {
     $product->load([
@@ -26,5 +19,21 @@ public function show(Product $product)
     ]);
 
     return view('product', compact('product'));
+}
+
+public function index()
+{
+    // Загружаем все товары с нужными связями
+    $products = Product::with([
+        'category.parent',        // для хлебных крошек
+        'images',                 // URL’ы картинок
+        'colors',                 // цвета и image_url
+        'reviews',                // отзывы
+        'characteristics',        // технические характеристики
+        'discounts',              // если нужны расчёты скидок
+        'relatedProducts'         // для списка похожих товаров
+    ])->get();
+
+    return view('catalog', compact('products')); // Передаем список товаров в представление
 }
 }

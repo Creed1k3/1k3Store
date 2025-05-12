@@ -3,7 +3,7 @@
     <div class="card-clickable" @click="goToProduct">
       <div class="image-wrapper">
         <!-- Показываем картинку: если есть цветовые варианты, берём image_url первого, иначе — main image -->
-        <img :src="variantImage || product.image" alt="Product Image" />
+        <img :src="variantImage || product.image || defaultImage" alt="Product Image" />
       </div>
 
       <div class="content">

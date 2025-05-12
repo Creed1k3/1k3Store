@@ -28,7 +28,7 @@
     <div class="content-grid">
       <div class="left">
         <div class="main-image">
-          <img :src="product.images[activeImageIndex]" alt="Product" />
+<img :src="product.images[activeImageIndex]?.url || 'default_image.jpg'" alt="Product" />
         </div>
         <div class="thumbnails">
           <div
@@ -38,7 +38,7 @@
             :class="{ selected: idx === activeImageIndex }"
             @click="setActiveImage(idx)"
           >
-            <img :src="img" alt="Thumb" />
+             <img :src="img?.url" alt="Thumb" />
           </div>
         </div>
       </div>
