@@ -17,9 +17,21 @@
           />
         </div>
 
-        <h2 :class="{ expanded: isExpanded }">
-          {{ product.title }}
-        </h2>
+<h2 :class="{ expanded: isExpanded }">
+  {{ product.title }}
+</h2>
+
+<div v-if="product.averageRating !== undefined" class="rating-block">
+  <span class="star">★</span>
+  <span class="rating">{{ product.averageRating.toFixed(1) }}</span>
+  <span class="separator-vertical">|</span>
+  <span class="review-count">{{ product.reviews.length }} отзыв{{ product.reviews.length === 1 ? '' : product.reviews.length < 5 ? 'а' : 'ов' }}</span>
+</div>
+
+<div v-else class="no-rating">Нет рейтинга
+</div>
+
+
 
         <hr class="separator" />
 
@@ -334,4 +346,37 @@ h2.expanded {
   padding: 0 12px;
   font-size: 14px;
 }
+.rating-block {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #444;
+  margin-top: 4px;
+  gap: 6px;
+}
+
+.star {
+  color: #f5a623; /* золотистая звезда */
+  font-size: 16px;
+}
+
+.rating {
+  font-weight: 600;
+}
+
+.separator-vertical {
+  color: #ccc;
+  margin: 0 4px;
+}
+
+.review-count {
+  color: #666;
+}
+
+.no-rating {
+  font-size: 14px;
+  color: #999;
+  margin-top: 4px;
+}
+
 </style>
