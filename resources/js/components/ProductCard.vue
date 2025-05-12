@@ -7,16 +7,6 @@
       </div>
 
       <div class="content">
-        <div class="dot-list">
-          <!-- Используем parsedColors — массив строк -->
-          <span
-            v-for="(color, i) in parsedColors"
-            :key="i"
-            class="dot"
-            :style="{ backgroundColor: color }"
-          />
-        </div>
-
 <h2 :class="{ expanded: isExpanded }">
   {{ product.title }}
 </h2>
