@@ -9,17 +9,25 @@ class ProductController extends Controller
 public function show(Product $product)
 {
     $product->load([
-        'category.parent',        // для хлебных крошек
-        'images',                 // URL’ы картинок
-        'colors',                 // цвета и image_url
-        'reviews',                // отзывы
-        'characteristics',        // технические характеристики
-        'discounts',              // если нужны расчёты скидок
-        'relatedProducts'         // для списка похожих товаров
+        'category.parent',
+        'images',
+        'colors',
+        'reviews',
+        'characteristics',
+        'discounts',
+        'relatedProducts'
     ]);
+
+    // Вычисляем средний рейтинг для этого продукта
+    if ($product->reviews->isNotEmpty()) {
+        $product->averageRating = $product->reviews->avg('rating');
+    } else {
+        $product->averageRating = 0;
+    }
 
     return view('product', compact('product'));
 }
+
 
 public function index()
 {

@@ -2,43 +2,39 @@
   <div class="product-card">
     <div class="card-clickable" @click="goToProduct">
       <div class="image-wrapper">
-        <!-- Показываем картинку: если есть цветовые варианты, берём image_url первого, иначе — main image -->
         <img :src="variantImage || product.image || defaultImage" alt="Product Image" />
       </div>
 
       <div class="content">
-<h2 :class="{ expanded: isExpanded }">
-  {{ product.title }}
-</h2>
+        <h2 :class="{ expanded: isExpanded }">
+          {{ product.title }}
+        </h2>
 
-<div v-if="product.averageRating !== undefined" class="rating-block">
-  <span class="star">★</span>
-  <span class="rating">{{ product.averageRating.toFixed(1) }}</span>
-  <span class="separator-vertical">|</span>
-  <span class="review-count">{{ product.reviews.length }} отзыв{{ product.reviews.length === 1 ? '' : product.reviews.length < 5 ? 'а' : 'ов' }}</span>
-</div>
-
-<div v-else class="no-rating">Нет рейтинга
-</div>
-
-
+        <div v-if="product.averageRating !== undefined" class="rating-block">
+          <span class="star">★</span>
+          <span class="rating">{{ product.averageRating.toFixed(1) }}</span>
+          <span class="separator-vertical">|</span>
+          <span class="review-count">
+            {{ product.reviews.length }} отзыв{{ product.reviews.length === 1 ? '' : product.reviews.length < 5 ? 'а' : 'ов' }}
+          </span>
+        </div>
+        <div v-else class="no-rating">Нет рейтинга</div>
 
         <hr class="separator" />
 
-        <div class="actions">
+        <!-- Actions with autoAnimate -->
+        <div ref="actionsContainer" class="actions">
           <div class="price-wrapper">
             <span class="product-price">{{ formattedPrice }}</span>
             <span class="currency">₽</span>
           </div>
 
-          <button
-            v-if="cartQuantity === 0"
-            class="add-cart-btn"
-            @click.stop="addToCart"
-          >
-            <span class="btn-icon">🛒</span>
-            <span class="btn-text">В корзину</span>
-          </button>
+          <template v-if="cartQuantity === 0">
+            <button class="add-cart-btn" @click.stop="addToCart">
+              <span class="btn-icon">🛒</span>
+              <span class="btn-text">В корзину</span>
+            </button>
+          </template>
 
           <div v-else class="counter-wrapper">
             <button class="counter-btn" @click.stop="decrease">–</button>
@@ -51,12 +47,10 @@
 
     <button class="favorite-btn" @click="$emit('toggle-favorite', product)">
       <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
              2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
              C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
-             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-        />
+             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
       </svg>
     </button>
   </div>
@@ -66,6 +60,8 @@
 import Cookies from 'js-cookie'
 import Toastify from 'toastify-js'
 import 'toastify-js/src/toastify.css'
+import { nextTick } from 'vue'
+import autoAnimate from '@formkit/auto-animate'
 
 export default {
   name: 'ProductCard',
@@ -75,20 +71,19 @@ export default {
   data() {
     return {
       isExpanded: false,
-      cartQuantity: 0
+      cartQuantity: 0,
+      defaultImage: ''
     }
   },
   computed: {
     formattedPrice() {
       return Number(this.product.price).toLocaleString('ru-RU')
     },
-    // массив строк-цветов
     parsedColors() {
       return Array.isArray(this.product.colors)
         ? this.product.colors.map(c => c.color)
         : []
     },
-    // изображение варианта (первый цветовой вариант)
     variantImage() {
       if (Array.isArray(this.product.colors) && this.product.colors.length) {
         return this.product.colors[0].image_url
@@ -98,6 +93,7 @@ export default {
   },
   mounted() {
     this.syncQuantity()
+    this.initAutoAnimate()
   },
   methods: {
     goToProduct() {
@@ -114,40 +110,22 @@ export default {
     saveCart(cart) {
       Cookies.set('cart', JSON.stringify(cart), { expires: 7 })
       this.syncQuantity()
+      this.initAutoAnimate()
       window.dispatchEvent(new CustomEvent('cart-updated'))
     },
     showToast(message) {
-      Toastify({
-        text: message,
-        duration: 1000,
-        gravity: 'bottom',
-        position: 'right',
-        style: {
-          background: '#21273c',
-          color: '#fff'
-        }
-      }).showToast()
+      Toastify({ text: message, duration: 1000, gravity: 'bottom', position: 'right', style: { background: '#21273c', color: '#fff' } }).showToast()
     },
     addToCart() {
       let cart = []
-      try {
-        cart = JSON.parse(Cookies.get('cart') || '[]')
-      } catch {}
+      try { cart = JSON.parse(Cookies.get('cart') || '[]') } catch {}
       const idx = cart.findIndex(i => i.id === this.product.id)
       const color = this.parsedColors[0] || 'Не указан'
       const image = this.variantImage || this.product.image
-
       if (idx !== -1) {
         cart[idx].quantity += 1
       } else {
-        cart.push({
-          id: this.product.id,
-          name: this.product.title,
-          price: this.product.price,
-          color,
-          image,
-          quantity: 1
-        })
+        cart.push({ id: this.product.id, name: this.product.title, price: this.product.price, color, image, quantity: 1 })
       }
       this.saveCart(cart)
       this.showToast('Товар добавлен в корзину')
@@ -155,9 +133,7 @@ export default {
     },
     increase() {
       let cart = []
-      try {
-        cart = JSON.parse(Cookies.get('cart') || '[]')
-      } catch {}
+      try { cart = JSON.parse(Cookies.get('cart') || '[]') } catch {}
       const idx = cart.findIndex(i => i.id === this.product.id)
       if (idx !== -1) {
         cart[idx].quantity += 1
@@ -167,9 +143,7 @@ export default {
     },
     decrease() {
       let cart = []
-      try {
-        cart = JSON.parse(Cookies.get('cart') || '[]')
-      } catch {}
+      try { cart = JSON.parse(Cookies.get('cart') || '[]') } catch {}
       const idx = cart.findIndex(i => i.id === this.product.id)
       if (idx !== -1) {
         cart[idx].quantity -= 1
@@ -181,6 +155,13 @@ export default {
         }
         this.saveCart(cart)
       }
+    },
+    initAutoAnimate() {
+      nextTick(() => {
+        if (this.$refs.actionsContainer) {
+          autoAnimate(this.$refs.actionsContainer)
+        }
+      })
     }
   }
 }
@@ -310,7 +291,8 @@ h2.expanded {
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 500;
-  border-radius: 6px;
+  border-radius: 50px; /* закругление */
+  transition: background 0.3s ease;
 }
 .add-cart-btn:hover {
   background: #1a2132;
