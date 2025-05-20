@@ -15,73 +15,7 @@ h1 {
     flex: 1;
 }
 
-.filter-sidebar {
-    width: 272px;
-    padding: 20px;
-    margin-right: 10px; /* Отступ между сайдбаром и сеткой товаров */
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    flex-shrink: 0; /* Запрещаем сайдбару сжиматься */
-}
 
-.filter-sidebar h3 {
-    margin-top: 0;
-    font-size: 1.5em;
-    color: #333;
-}
-
-.filter-section {
-    margin-bottom: 20px;
-}
-
-.filter-section h4 {
-    margin: 0 0 10px 0;
-    font-size: 1.2em;
-    color: #555;
-}
-
-.filter-section select,
-.filter-section input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    font-size: 1em;
-}
-
-.price-range {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.price-range input {
-    flex: 1;
-}
-
-.filter-section label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 1em;
-    color: #666;
-}
-
-.filter-section input[type="checkbox"] {
-    margin-right: 8px;
-}
-
-.apply-filters {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1em;
-    cursor: pointer;
-}
 
 .apply-filters:hover {
     background-color: #0056b3;

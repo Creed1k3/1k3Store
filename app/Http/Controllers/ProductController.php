@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -52,7 +53,9 @@ public function index()
         }
     });
 
-    return view('catalog', compact('products')); // Передаем список товаров в представление
+    $categories = Category::with('children')->get();
+
+    return view('catalog', compact('products', 'categories')); // Передаем список товаров в представление
 }
 
 }

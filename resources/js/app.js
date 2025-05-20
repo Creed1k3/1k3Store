@@ -21,6 +21,8 @@ import LoginModal from './components/modals/LoginModal.vue';
 import Cart from './components/Cart.vue';
 import Footer from './components/Footer.vue';
 import ProductPage from './components/ProductPage.vue';
+import FilterSidebar from './components/FilterSidebar.vue';
+import Catalog from './components/Catalog.vue'
 
 const app = createApp({});
 
@@ -39,5 +41,6 @@ app.component('login-modal', LoginModal);
 app.component('cart-component', Cart)
 app.component('footer-component', Footer);
 app.component('product-page', ProductPage);
-
+app.component('filtersidebar-component', FilterSidebar);
+app.component('catalog-component', Catalog)
 app.mount('#app');
