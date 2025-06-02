@@ -3,25 +3,38 @@
     <div class="headwrapper">
       <header class="header">
         <div class="logo-catalog" ref="logoCatalog">
-          <button class="home-button" @click="backtohome">
-            <!-- Simplified 1k3 text logo -->
-            <svg class="home-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-              <text
-                x="50"
-                y="60"
-                font-family="Montserrat, sans-serif"
-                font-size="48"
-                fill="#ffffff"
-                text-anchor="middle"
-                font-weight="700"
-              >
-              Ph-
-              </text>
-            </svg>
+          <!-- Кнопка домашней страницы (без анимации) -->
+          <button class="home-icon-button" @click="backtohome">
+            <div class="home-icon-wrapper">
+              <HomeIcon class="home-icon" />
+              <div class="home-brand-text">
+                <span class="vireon">Vireon</span>
+                <span class="market">Market</span>
+              </div>
+            </div>
           </button>
-          <button class="catalog-btn" @click="toggleCatalog">
-            Каталог
+
+          <!-- Кнопка каталога с анимацией autoAnimate -->
+          <button
+            class="catalog-icon-button"
+            @click="toggleCatalog"
+            ref="catalogIconButton"
+          >
+            <div class="catalog-icon-wrapper" >
+              <div class="catalog-brand-text">
+                <span class="catalog-label">Каталог</span>
+              </div>
+              <div class="catalog-icon-clickable">
+                <!-- Здесь иконка меняется с анимацией -->
+                <component
+                  :is="isCatalogOpen ? 'OpenCatalogIcon' : 'CloseCatalogIcon'"
+                  class="catalog-icon"
+                  key="catalog-icon"
+                />
+              </div>
+            </div>
           </button>
+
           <div
             class="catalog-dropdown"
             v-if="isCatalogOpen"
@@ -93,10 +106,15 @@
 </template>
 
 <script>
+import autoAnimate from '@formkit/auto-animate';
+
 import FavoritesIcon from '@/assets/images/headerfavorites.svg';
 import CartIcon from '@/assets/images/headercart.svg';
 import AvatarIcon from '@/assets/images/defaultavatar.svg';
+import HomeIcon from '@/assets/images/HomeIcon.svg';
 import LoginModal from './modals/LoginModal.vue';
+import OpenCatalogIcon from '@/assets/images/OpenCatalogIcon.svg';
+import CloseCatalogIcon from '@/assets/images/CloseCatalogIcon.svg';
 import Cookies from 'js-cookie';
 
 export default {
@@ -105,7 +123,10 @@ export default {
     FavoritesIcon,
     CartIcon,
     AvatarIcon,
-    LoginModal
+    HomeIcon,
+    LoginModal,
+    OpenCatalogIcon,
+    CloseCatalogIcon
   },
   data() {
     return {
@@ -201,6 +222,11 @@ export default {
     }
   },
   mounted() {
+    // Подключаем autoAnimate к элементу кнопки каталога
+    if (this.$refs.catalogIconButton) {
+      autoAnimate(this.$refs.catalogIconButton, { duration: 300, easing: 'ease-in-out' });
+    }
+
     document.addEventListener('click', this.handleOutsideClick);
     this.updateCartCount();
     window.addEventListener('cart-updated', this.updateCartCount);
@@ -213,6 +239,8 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
 .headbg {
   background-color: #f7f7f7;
   width: 100%;
@@ -225,6 +253,48 @@ export default {
   justify-content: center;
   padding: 10px 0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.home-icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.home-brand-text .market {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a4a4a;
+}
+
+.home-icon-button:hover .home-brand-text .vireon,
+.home-icon-button:hover .home-brand-text .market {
+  color: #1a1a2e;
+}
+
+.home-brand-text {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1;
+  text-align: left;
+  transform: translateY(-1px); /* Чуть выше для баланса */
+
+}
+.catalog-icon-clickable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+}
+.catalog-icon {
+  pointer-events: none; /* чтобы клик не "застревал" на иконке */
+}
+.home-brand-text .vireon {
+  font-size: 18px;
+  font-weight: 600;
+  color: #20293a;
 }
 
 .headwrapper {
@@ -253,69 +323,101 @@ export default {
   display: flex;
   align-items: center;
   position: relative;
-  gap: 12px;
+  gap: 16px;
 }
 
-.home-button, .catalog-btn {
+.home-icon-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 56px;
-  padding: 0 20px;
-  background-color: #20293a;
-  color: #ffffff;
+  background: transparent;
   border: none;
-  border-radius: 28px;
+  padding: 8px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.home-button {
-  width: 56px;
- 	padding: 0;
+.home-icon-button:hover {
+  background-color: #f2f3f5;
+  border-radius: 12px;
+  transform: translateY(-1px);
+}
+.home-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: #20293a;
+  border: none;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: all 0.25s ease;
 }
 
-.home-button:hover, .catalog-btn:hover {
-  background-color: #1b2532;
- 	transform: translateY(-2px);
+.home-link:hover {
+  background-color: #f0f2f5;
+  transform: translateY(-1px);
 }
+
+.home-link span {
+  transition: color 0.3s ease;
+}
+
+.home-link:hover span {
+  color: #1e1e2f;
+}
+
 
 .home-icon {
-  width: 60%; height: auto;
+  width: 56px;
+  height: 56x;
 }
 
-.catalog-btn {
-  font-size: 16px;
- 	font-weight: 600;
-}
-
-.catalog-dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  width: 260px;
-  padding: 8px 0;
-}
-
-.catalog-dropdown ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.catalog-dropdown li {
-  padding: 12px 20px;
+.catalog-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 8px;
   cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  border-radius: 12px;
+  height: 56px; /* Добавлено */
 }
 
-.catalog-dropdown li:hover {
-  background-color: #f7f7f7;
+.catalog-icon-button:hover {
+  background-color: #f2f3f5;
+  transform: translateY(-1px);
+}
+
+.catalog-icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.catalog-brand-text {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1;
+  text-align: left;
+  transform: translateY(-1px);
+}
+
+.catalog-label {
+  font-size: 18px; /* Было 16px */
+  font-weight: 600;
+  color: #20293a;
+}
+
+.catalog-icon {
+  width: 56px;
+  height: 56px;
 }
 
 .submenu {
@@ -405,14 +507,12 @@ export default {
 
 .cart-badge {
   position: absolute;
-  /* Размещаем над иконкой, не перекрывая */
   top: -4px;
   right: -4px;
   min-width: 22px;
   height: 22px;
   padding: 0 6px;
   background-color: #21273c;
-  /* Числа белые и контрастные */
   color: #ffffff !important;
   font-size: 12px;
   font-weight: 600;
@@ -420,7 +520,6 @@ export default {
   text-align: center;
   border-radius: 11px;
   border: 1px solid #ffffff;
-  /* лёгкая тень для текста */
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 </style>

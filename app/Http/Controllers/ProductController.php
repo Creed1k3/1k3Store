@@ -58,4 +58,19 @@ public function index()
     return view('catalog', compact('products', 'categories')); // Передаем список товаров в представление
 }
 
+public function getByIds(Request $request)
+{
+    $ids = $request->input('ids', []);
+
+    if (!is_array($ids) || empty($ids)) {
+        return response()->json([], 400); // Плохой запрос
+    }
+
+    $products = Product::with('reviews') // если нужны отзывы
+        ->whereIn('id', $ids)
+        ->get();
+
+    return response()->json($products);
+}
+
 }

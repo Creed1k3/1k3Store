@@ -12,81 +12,94 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Левая часть: товары или пустая корзина -->
       <div class="md:col-span-2 space-y-4">
-        <div class="flex justify-between text-gray-500 font-medium px-4">
-          <span class="w-3/4 text-left">Продукт</span>
-          <span class="w-1/4 text-right">Действия</span>
-        </div>
-
-        <div
-          v-for="item in cartItems"
-          :key="item.id"
-          class="flex border rounded-xl shadow w-full overflow-hidden transition duration-300 ease-in-out"
-          :class="{'bg-gray-100': !item.isActive, 'opacity-50': !item.isActive}"
-        >
-          <div class="flex items-center justify-between p-4 flex-1">
-            <div class="flex items-center gap-4 relative">
-              <input 
-                type="checkbox" 
-                v-model="item.isActive" 
-                class="form-checkbox h-5 w-5 text-blue-600 absolute top-0 left-0 z-10"
-                @change="saveCart"
-              />
-              <img 
-                :src="item.image" 
-                class="w-20 h-20 rounded-lg object-cover transform transition-all duration-300" 
-                :class="{'scale-105': item.isActive}" 
-              />
-            </div>
-            <div class="flex-1 pl-6">
-              <div class="font-semibold text-left">{{ item.name }}</div>
-              <div class="text-sm text-gray-500 text-left">Набор: Цвет {{ item.color }}</div>
-            </div>
-            <div class="flex items-center gap-4">
-              <!-- ОБНОВЛЁННЫЙ КРУГ С ЧЁРНОЙ ОБВОДКОЙ -->
-              <div class="flex items-center justify-center border border-black rounded-full w-28 h-10">
-                <button
-                  class="text-lg font-bold text-gray-700 hover:text-black px-3"
-                  @click="handleMinus(item)"
-                >
-                  −
-                </button>
-                <span class="w-6 text-center font-medium">{{ item.quantity }}</span>
-                <button
-                  class="text-lg font-bold text-gray-700 hover:text-black px-3"
-                  @click="changeQty(item, item.quantity + 1)"
-                >
-                  +
-                </button>
-              </div>
-              <div class="font-semibold whitespace-nowrap w-24 text-right">
-                {{ item.isActive ? formatNumber(item.quantity * item.price) : '0' }} ₽
-              </div>
-            </div>
+        <!-- Если есть товары -->
+        <template v-if="cartItems.length > 0">
+          <div class="flex justify-between text-gray-500 font-medium px-4">
+            <span class="w-3/4 text-left">Продукт</span>
+            <span class="w-1/4 text-right">Действия</span>
           </div>
 
-          <div class="w-[80px] flex items-center justify-center gap-3 px-2 border-l">
-            <button
-              v-if="item.isActive"
-              class="text-red-500 hover:text-red-700"
-              @click="openDeleteModal(item)"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <button
-              class="text-pink-500 hover:text-pink-700"
-              @click="$emit('toggle-favorite', item)"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.343l-6.828-6.829a4 4 0 010-5.656z"/>
-              </svg>
-            </button>
+          <div
+            v-for="item in cartItems"
+            :key="item.id"
+            class="flex border rounded-xl shadow w-full overflow-hidden transition duration-300 ease-in-out"
+            :class="{'bg-gray-100': !item.isActive, 'opacity-50': !item.isActive}"
+          >
+            <div class="flex items-center justify-between p-4 flex-1">
+              <div class="flex items-center gap-4 relative">
+                <input 
+                  type="checkbox" 
+                  v-model="item.isActive" 
+                  class="form-checkbox h-5 w-5 text-blue-600 absolute top-0 left-0 z-10"
+                  @change="saveCart"
+                />
+                <img 
+                  :src="item.image" 
+                  class="w-20 h-20 rounded-lg object-cover transform transition-all duration-300" 
+                  :class="{'scale-105': item.isActive}" 
+                />
+              </div>
+              <div class="flex-1 pl-6">
+                <div class="font-semibold text-left">{{ item.name }}</div>
+                <div class="text-sm text-gray-500 text-left">Набор: Цвет {{ item.color }}</div>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center justify-center border border-black rounded-full w-28 h-10">
+                  <button
+                    class="text-lg font-bold text-gray-700 hover:text-black px-3"
+                    @click="handleMinus(item)"
+                  >
+                    −
+                  </button>
+                  <span class="w-6 text-center font-medium">{{ item.quantity }}</span>
+                  <button
+                    class="text-lg font-bold text-gray-700 hover:text-black px-3"
+                    @click="changeQty(item, item.quantity + 1)"
+                  >
+                    +
+                  </button>
+                </div>
+                <div class="font-semibold whitespace-nowrap w-24 text-right">
+                  {{ item.isActive ? formatNumber(item.quantity * item.price) : '0' }} ₽
+                </div>
+              </div>
+            </div>
+
+            <div class="w-[80px] flex items-center justify-center gap-3 px-2 border-l">
+              <button
+                v-if="item.isActive"
+                class="text-red-500 hover:text-red-700"
+                @click="openDeleteModal(item)"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <button
+                class="text-pink-500 hover:text-pink-700"
+                @click="$emit('toggle-favorite', item)"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.343l-6.828-6.829a4 4 0 010-5.656z"/>
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
+        </template>
+
+        <!-- Если корзина пуста -->
+<template v-else>
+  <div class="flex flex-col items-center justify-center py-20">
+    <EmptyCartIcon class="w-[20%] h-auto text-gray-400" />
+    <p class="text-gray-500 text-xl">Корзина пуста</p>
+  </div>
+</template>
+
       </div>
 
+      <!-- Правая часть: сводка заказа -->
       <div class="p-6 border rounded-xl shadow">
         <h2 class="text-xl font-semibold mb-4 text-left">Сводка заказа</h2>
         <div class="space-y-2">
@@ -166,6 +179,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import Cookies from 'js-cookie';
+// Если храните SVG в src/assets, раскомментируйте и укажите путь:
+import EmptyCartIcon from '@/assets/images/Emptycart.svg';
 
 const cartItems = ref([]);
 const discountCode = ref('');
