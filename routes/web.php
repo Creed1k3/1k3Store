@@ -21,3 +21,5 @@ Route::get('/cart', function () {
 
 Route::get('/product/{product:slug}', [ProductController::class, 'show'])
      ->name('product.show');
+
+ Route::get('/products/by-ids', [ProductController::class, 'getByIds']);

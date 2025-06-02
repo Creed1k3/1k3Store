@@ -1,12 +1,11 @@
 <template>
-  <div v-if="products.length" class="carousel-container" @wheel="handleScroll">
+  <div class="carousel-container" @wheel="handleScroll">
     <button class="carousel-control prev" @click="prevSlide">&#10094;</button>
-
     <div class="carousel-wrapper">
       <div class="carousel" :style="carouselStyle">
         <div
           class="carousel-item"
-          v-for="product in visibleProducts"
+          v-for="product in products"
           :key="product.id"
           :style="carouselItemStyle"
         >
@@ -14,79 +13,73 @@
         </div>
       </div>
     </div>
-
     <button class="carousel-control next" @click="nextSlide">&#10095;</button>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import ProductCard from './ProductCard.vue'
+import axios from 'axios';
+import ProductCard from './ProductCard.vue'; // Убедись, что путь правильный
 
 export default {
   name: 'ProductCarousel',
   components: { ProductCard },
-  props: {
-    productIds: {
-      type: Array,
-      required: true
-    }
-  },
   data() {
     return {
-      products: [],
       currentIndex: 0,
       itemsToShow: 4,
-      gap: 20
-    }
+      gap: 20,
+      productIds: [1, 2, 3, 4, 5, 6], // здесь укажи ID нужных товаров
+      products: []
+    };
   },
   computed: {
-    visibleProducts() {
-      return this.products.slice(this.currentIndex, this.currentIndex + this.itemsToShow)
-    },
     carouselStyle() {
       return {
-        display: 'flex',
-        transition: 'transform 0.5s ease-in-out',
+        transform: `translateX(-${this.currentIndex * (100 / this.itemsToShow)}%)`,
         gap: `${this.gap}px`
-      }
+      };
     },
     carouselItemStyle() {
       return {
         minWidth: `calc((100% / ${this.itemsToShow}) - ${this.gap}px)`
-      }
+      };
     }
   },
   methods: {
-    async fetchProducts() {
-      try {
-        const response = await axios.get('/api/products/by-ids', {
-          params: { ids: this.productIds }
-        })
-        this.products = response.data
-      } catch (error) {
-        console.error('Ошибка при загрузке товаров:', error)
-      }
-    },
     nextSlide() {
       if (this.currentIndex < this.products.length - this.itemsToShow) {
-        this.currentIndex++
+        this.currentIndex++;
       }
     },
     prevSlide() {
       if (this.currentIndex > 0) {
-        this.currentIndex--
+        this.currentIndex--;
       }
     },
     handleScroll(event) {
-      event.preventDefault()
-      event.deltaY > 0 ? this.nextSlide() : this.prevSlide()
+      event.preventDefault();
+      if (event.deltaY > 0) {
+        this.nextSlide();
+      } else {
+        this.prevSlide();
+      }
+    },
+    async fetchProducts() {
+      try {
+        const response = await axios.get('/products/by-ids', {
+          params: { ids: this.productIds }
+        });
+        this.products = response.data;
+      } catch (error) {
+        console.error('Ошибка при загрузке товаров:', error);
+      }
     }
   },
   mounted() {
-    this.fetchProducts()
+    this.fetchProducts();
   }
-}
+};
 </script>
 
 <style scoped>
@@ -101,10 +94,14 @@ export default {
   width: 100%;
 }
 
+.carousel {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
 .carousel-item {
   box-sizing: border-box;
-  flex: 0 0 auto;
-  padding-right: 20px;
+  height: auto;
 }
 
 .carousel-control {
@@ -117,8 +114,6 @@ export default {
   font-size: 2rem;
   cursor: pointer;
   z-index: 1;
-  padding: 0 10px;
-  border-radius: 4px;
 }
 
 .carousel-control.prev {
