@@ -22,6 +22,8 @@
     },
     "dependencies": {
         "@formkit/auto-animate": "^0.8.2",
+        "embla-carousel": "^8.6.0",
+        "embla-carousel-wheel-gestures": "^8.0.2",
         "js-cookie": "^3.0.5",
         "notyf": "^3.10.0",
         "toastify-js": "^1.12.0"

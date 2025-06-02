@@ -67,11 +67,22 @@ public function getByIds(Request $request)
         return response()->json([], 400); // Плохой запрос
     }
 
-    $products = Product::with('reviews') // если нужны отзывы
+    // Загружаем товары с отзывами
+    $products = Product::with('reviews')
         ->whereIn('id', $ids)
         ->get();
 
+    // Вычисляем средний рейтинг для каждого продукта
+    $products->each(function ($product) {
+        if ($product->reviews->isNotEmpty()) {
+            $product->averageRating = $product->reviews->avg('rating');
+        } else {
+            $product->averageRating = 0;
+        }
+    });
+
     return response()->json($products);
 }
+
 
 }
