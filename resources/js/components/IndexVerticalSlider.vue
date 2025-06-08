@@ -150,12 +150,12 @@
   }
   
   .brands-container::-webkit-scrollbar-thumb {
-    background-color: #007bff;
+    background-color: #20293a;
     border-radius: 12px;
   }
   
   .brands-container::-webkit-scrollbar-thumb:hover {
-    background-color: #0056b3;
+    background-color: #20293a;
   }
   
   .brands-container::-webkit-scrollbar-track {
