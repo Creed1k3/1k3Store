@@ -1,129 +1,123 @@
 <template>
-  <div class="slider" @wheel="handleScroll">
-    <div class="slides" :style="slideStyle">
-      <div v-for="(slide, index) in slides" :key="index" class="slide">
-        <img :src="slide.image" :alt="slide.alt" class="slide-image" />
+  <div class="embla" ref="emblaRef" @wheel.prevent="onWheel">
+    <div class="embla__container">
+      <div
+        class="embla__slide"
+        v-for="(slide, index) in slides"
+        :key="index"
+      >
+        <img :src="slide.image" :alt="slide.alt" class="embla__slide__img" />
       </div>
     </div>
-    <button class="slider-button prev" @click="prevSlide">&#10094;</button>
-    <button class="slider-button next" @click="nextSlide">&#10095;</button>
+     <button class="embla__button prev" @click="scrollPrev" aria-label="Назад">
+      <ArrowLeftIcon />
+    </button>
+    <button class="embla__button next" @click="scrollNext" aria-label="Вперед">
+      <ArrowRightIcon />
+    </button>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'SimpleSlider',
-  data() {
-    return {
-      slides: [
-        {
-          image: '/images/slider1.png',
-          alt: 'Slide 1',
-        },
-        {
-          image: '/images/slider2.png',
-          alt: 'Slide 2',
-        },
-        {
-          image: '/images/slider3.png',
-          alt: 'Slide 3',
-        },
-        {
-          image: '/images/slider3.png',
-          alt: 'Slide 3',
-        },
-        {
-          image: '/images/slider4.png',
-          alt: 'Slide 4',
-        },
-        {
-          image: '/images/slider5.png',
-          alt: 'Slide 5',
-        },
-        {
-          image: '/images/slider6.png',
-          alt: 'Slide 6',
-        },
-      ],
-      currentIndex: 0,
-    };
-  },
-  computed: {
-    slideStyle() {
-      return {
-        transform: `translateX(-${this.currentIndex * 100}%)`,
-      };
-    },
-  },
-  methods: {
-    nextSlide() {
-      this.currentIndex = (this.currentIndex + 1) % this.slides.length;
-    },
-    prevSlide() {
-      this.currentIndex =
-        (this.currentIndex - 1 + this.slides.length) % this.slides.length;
-    },
-    handleScroll(event) {
-        event.preventDefault();
-        if (event.deltaY > 0) {
-          this.nextSlide();
-        } else {
-          this.prevSlide();
-        }
-      }
-  },
-};
-   
+<script setup>
+import { ref, onMounted } from 'vue'
+import EmblaCarousel from 'embla-carousel'
+
+import ArrowLeftIcon from '@/assets/icons/arrow-left.svg'
+import ArrowRightIcon from '@/assets/icons/arrow-right.svg'
+
+const emblaRef = ref(null)
+let embla = null
+
+const slides = ref([
+  { image: '/images/slider1.png', alt: 'Slide 1' },
+  { image: '/images/slider2.png', alt: 'Slide 2' },
+  { image: '/images/slider3.png', alt: 'Slide 3' },
+  { image: '/images/slider4.png', alt: 'Slide 4' },
+  { image: '/images/slider5.png', alt: 'Slide 5' },
+  { image: '/images/slider6.png', alt: 'Slide 6' },
+])
+
+const scrollNext = () => embla?.scrollNext()
+const scrollPrev = () => embla?.scrollPrev()
+
+const onWheel = (event) => {
+  if (!embla) return
+  event.deltaY > 0 ? scrollNext() : scrollPrev()
+}
+
+onMounted(() => {
+  embla = EmblaCarousel(emblaRef.value, {
+    loop: true,
+    align: 'start',
+    skipSnaps: false,
+  })
+})
 </script>
 
+
 <style scoped>
-.slider {
+.embla {
   position: relative;
-  margin: 0 auto;
   overflow: hidden;
+  width: 100%;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
-.slides {
+.embla__container {
   display: flex;
-  transition: transform 0.5s ease-in-out;
 }
-
-.slide {
+.embla__slide {
+  position: relative;
   min-width: 100%;
+  padding: 10px;
   box-sizing: border-box;
 }
-
-.slide-image {
-  width: 100%;
+.embla__slide__img {
   display: block;
+  width: 100%;
   border-radius: 12px;
 }
 
-.slider-button {
+.embla__button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  width: 48px;
+  height: 48px;
   border: none;
-  padding: 10px;
-  cursor: pointer;
   border-radius: 50%;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.slider-button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+.embla__button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+  transform: translateY(-50%) scale(1.1);
 }
 
-.prev {
+.embla__button:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.embla__button.prev {
   left: 10px;
 }
 
-.next {
+.embla__button.next {
   right: 10px;
 }
+
+.embla__button svg {
+  width: 48px;
+  height: 48px;
+  fill: white;
+}
+
 </style>
